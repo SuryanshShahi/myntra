@@ -31,6 +31,7 @@ function Bag() {
   useEffect(() => {
     getData();
     document.title = `SHOPPING BAG`;
+    document.body.style.background = "none";
   }, []);
   return (
     <section id="bag">
