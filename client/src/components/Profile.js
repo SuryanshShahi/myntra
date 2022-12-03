@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { userProfile } from "../Data/Data";
 import address from "./images/profile-address.png";
 import cards from "./images/profile-cards.png";
@@ -14,9 +14,13 @@ import upi from "./images/upi.png";
 import StarsRating from "stars-rating";
 import Accordion from "react-bootstrap/Accordion";
 import { NavLink } from "react-router-dom";
+import Box from "@mui/material/Box";
+import TextField from "@mui/material/TextField";
 
 function Profile() {
   window.scroll(0, 0);
+  const [isActive, setActive] = useState(false);
+
   const setAddress = () => {
     var a = document.getElementById("default");
     var b = document.getElementById("other");
@@ -36,6 +40,7 @@ function Profile() {
       <div
         className="container-lg mt-5 container-fluid"
         id="profile"
+        style={{ maxWidth: "1000px" }}
       >
         <div className="mt-3" style={{ borderBottom: "1px solid #8080804d" }}>
           <div style={{ fontWeight: "700", fontSize: "19px" }}>Account</div>
@@ -96,7 +101,7 @@ function Profile() {
             </div>
             <li
               className="tab py-1"
-              href="#profile"
+              href="#profile1"
               data-toggle="tab"
               type="button"
             >
@@ -545,10 +550,16 @@ function Profile() {
                     className="p-4 mt-3"
                     style={{ boxShadow: "0 1px 2px 0 rgb(0 0 0 / 25%)" }}
                   >
-                    <div className="text-center" style={{ fontSize: "13px", fontWeight: "500" }}>
+                    <div
+                      className="text-center"
+                      style={{ fontSize: "13px", fontWeight: "500" }}
+                    >
                       TOP-UP YOUR MYNTRA CREDIT NOW!
                     </div>
-                    <div className="text-center" style={{ fontSize: "30px", fontWeight: "700" }}>
+                    <div
+                      className="text-center"
+                      style={{ fontSize: "30px", fontWeight: "700" }}
+                    >
                       {" "}
                       ₹0.00
                     </div>
@@ -640,7 +651,8 @@ function Profile() {
                           fontSize: "14px",
                         }}
                       >
-                        MYNTRA CREDIT T&C <span className="fa fa-angle-right fa-lg pl-2"></span>
+                        MYNTRA CREDIT T&C{" "}
+                        <span className="fa fa-angle-right fa-lg pl-2"></span>
                       </div>
                       <div
                         className="col-4 text-center"
@@ -650,7 +662,8 @@ function Profile() {
                           fontSize: "14px",
                         }}
                       >
-                        GIFT CARD T&C <span className="fa fa-angle-right fa-lg pl-2"></span>
+                        GIFT CARD T&C{" "}
+                        <span className="fa fa-angle-right fa-lg pl-2"></span>
                       </div>
                       <div
                         className="col-4 text-center"
@@ -660,7 +673,8 @@ function Profile() {
                           fontSize: "14px",
                         }}
                       >
-                        FAQS <span className="fa fa-angle-right fa-lg pl-2"></span>
+                        FAQS{" "}
+                        <span className="fa fa-angle-right fa-lg pl-2"></span>
                       </div>
                     </div>
                   </div>
@@ -994,41 +1008,227 @@ function Profile() {
                 </div>
               </div>
 
-              <div id="profile" className="tab-pane fade">
-                <div
-                  className="justify-content-center d-flex py-5"
-                  style={{ border: "1px solid #8080804d", width: "100%" }}
-                >
-                  <div className="w-75">
-                    <div
-                      className="mb-4 mx-5"
-                      style={{ fontWeight: "700", fontSize: "20px" }}
-                    >
-                      Profile Details
-                    </div>
-                    <hr style={{ color: "#808080fa" }}></hr>
-                    <div className="mt-5 mx-5">
-                      {userProfile.map((e) => {
-                        return (
-                          <div style={{ fontSize: "16px" }}>
-                            <div className="d-flex text-dark mb-4" key={e.id}>
-                              <div>{e.Field}</div>
-                              <div className="ml-auto">{e.value}</div>
-                            </div>
-                          </div>
-                        );
-                      })}
-                    </div>
-                    <div className="mx-5 mt-5">
+              <div id="profile1" className="tab-pane fade">
+                {!isActive ? (
+                  <div
+                    className="justify-content-center d-flex py-5"
+                    style={{ border: "1px solid #8080804d", width: "100%" }}
+                  >
+                    <div className="w-75">
                       <div
-                        className="btn btn-danger border-0 rounded-0 w-100 my-2 py-3"
-                        style={{ background: "rgb(255, 63, 108)" }}
+                        className="mb-4 mx-5"
+                        style={{ fontWeight: "700", fontSize: "20px" }}
                       >
-                        <b>EDIT</b>
+                        Profile Details
+                      </div>
+                      <hr style={{ color: "#808080fa" }}></hr>
+                      <div className="mt-5 mx-5">
+                        {userProfile.map((e) => {
+                          return (
+                            <div style={{ fontSize: "16px" }}>
+                              <div className="d-flex text-dark mb-4" key={e.id}>
+                                <div>{e.Field}</div>
+                                <div className="ml-auto">{e.value}</div>
+                              </div>
+                            </div>
+                          );
+                        })}
+                      </div>
+                      <div className="mx-5 mt-5">
+                        <div
+                          className="btn btn-danger border-0 rounded-0 w-100 my-2 py-3"
+                          style={{ background: "rgb(255, 63, 108)" }}
+                          onClick={() => setActive(true)}
+                        >
+                          <b>EDIT</b>
+                        </div>
                       </div>
                     </div>
                   </div>
-                </div>
+                ) : (
+                  <div
+                    className="justify-content-center d-flex py-5"
+                    style={{
+                      border: "1px solid #8080804d",
+                      width: "100%",
+                      boxShadow: "0 1px 2px 0 rgb(0 0 0 / 25%)",
+                    }}
+                  >
+                    <div className="w-75">
+                      <div
+                        className="mb-4 mx-5"
+                        style={{ fontWeight: "700", fontSize: "20px" }}
+                      >
+                        Edit Details
+                      </div>
+                      <hr style={{ color: "#808080fa" }}></hr>
+                      <div
+                        className="p-3 mb-4"
+                        style={{ border: "1px solid #8080804d" }}
+                      >
+                        <div className="d-flex">
+                          <div className="">
+                            <div style={{ color: "grey" }}>Mobile Number</div>
+                            <div className="d-flex align-items-center">
+                              <div>xxxxxxxxxx</div>
+                              <div className="fa fa-check-circle text-success ml-3"></div>
+                            </div>
+                          </div>
+                          <div
+                            className="btn btn-dark bg-transparent w-50 justify-content-center text-dark align-items-center d-flex ml-auto"
+                            style={{
+                              fontWeight: "500",
+                              height: "45px",
+                              border: "1px solid #8080804d",
+                            }}
+                          >
+                            CHANGE
+                          </div>
+                        </div>
+                      </div>
+                      <Box
+                        component="form"
+                        sx={{
+                          "& > :not(style)": { width: "100%" },
+                        }}
+                      >
+                        <div className="">
+                          <TextField
+                            required
+                            id="fname"
+                            label="Full Name"
+                            type={"text"}
+                            variant="outlined"
+                            sx={{
+                              width: "100%",
+                              color: "white",
+                              fontSize: "14px",
+                              height: "45px",
+                              // border: "1px solid #8080804d",
+                            }}
+                            color="warning"
+                          />
+                          <div className="d-flex w-100 my-4">
+                            <div
+                              className="w-50 p-2 d-flex justify-content-center"
+                              style={{ border: "1px solid #8080804d" }}
+                            >
+                              <input
+                                className="form-check mr-2"
+                                name="radio"
+                                type="radio"
+                                style={{ width: "20px" }}
+                              />
+                              <label>Male</label>
+                            </div>
+                            <div
+                              className="w-50 p-2 d-flex justify-content-center"
+                              style={{ border: "1px solid #8080804d" }}
+                            >
+                              <input
+                                className="form-check mr-2"
+                                name="radio"
+                                type="radio"
+                                style={{ width: "20px" }}
+                              />
+                              <label>Female</label>
+                            </div>
+                          </div>
+                          <TextField
+                            required
+                            id="dob"
+                            label="Birthday (dd/mm/yyyy)"
+                            type={"text"}
+                            variant="outlined"
+                            sx={{
+                              width: "100%",
+                              color: "white",
+                              fontSize: "14px",
+                              height: "45px",
+                              // border: "1px solid #8080804d",
+                            }}
+                            color="warning"
+                          />
+                          <TextField
+                            className="mt-4"
+                            required
+                            id="dob"
+                            label="Location"
+                            type={"text"}
+                            variant="outlined"
+                            sx={{
+                              width: "100%",
+                              color: "white",
+                              fontSize: "14px",
+                              height: "45px",
+                              // border: "1px solid #8080804d",
+                            }}
+                            color="warning"
+                          />
+                          <div
+                            className="my-4"
+                            style={{ fontWeight: "600", fontSize: "14px" }}
+                          >
+                            Alternate mobile details
+                          </div>
+
+                          <div className="align-items-center d-flex">
+                            <div
+                              className="pl-2"
+                              style={{
+                                zIndex: "1",
+                                color: "#808080d4",
+                                position: "absolute",
+                              }}
+                            >
+                              +91 |{" "}
+                            </div>
+                            <input
+                              className="form-control shadow-none rounded-0 w-100"
+                              type="tel"
+                              placeholder="Mobile Number"
+                              pattern="[0-9]{10}"
+                              name="number"
+                              style={{ height: "45px", paddingLeft: "54px" }}
+                            />
+                          </div>
+                          <TextField
+                            className="mt-4"
+                            required
+                            id="dob"
+                            label="Hint name"
+                            type={"text"}
+                            variant="outlined"
+                            sx={{
+                              width: "100%",
+                              color: "white",
+                              fontSize: "14px",
+                              height: "45px",
+                              // border: "1px solid #8080804d",
+                            }}
+                            color="warning"
+                          />
+                        </div>
+                      </Box>
+                      <div className="my-5">
+                        <div
+                          className="btn btn-danger border-0 rounded-0 w-100 my-2 py-3"
+                          style={{ background: "rgb(255, 63, 108)" }}
+                        >
+                          <b>SAVE DETAILS</b>
+                        </div>
+                      </div>
+                      <div className="">
+                        <div
+                          className="btn btn-dark bg-transparent text-dark rounded-0 w-100 py-3"
+                          style={{ border: "1px solid #8080804d" }}
+                        >
+                          <b>CHANGE PASSWORD</b>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                )}
               </div>
 
               <div id="cards" className="tab-pane fade">
@@ -1186,6 +1386,8 @@ function Profile() {
                       <div
                         className="text-center col-6"
                         style={{ borderRight: "1px solid #8080804d" }}
+                        data-target="#mymodal"
+                        data-toggle="modal"
                       >
                         <div
                           style={{
@@ -1292,6 +1494,222 @@ function Profile() {
                     </div>
                   </div>
                 </div>
+
+                <div className="modal fade" id="mymodal">
+                  <div className="modal-dialog modal-md">
+                    <div
+                      className="modal-content"
+                      style={{ background: "#eee" }}
+                    >
+                      <div
+                        className="p-3 bg-white position-sticky"
+                        style={{
+                          top: "0",
+                          boxShadow: "rgb(0 0 0 / 25%) 0px 1px 2px 0px",
+                        }}
+                      >
+                        EDIT ADDRESS
+                      </div>
+                      <div style={{ height: "70vh", overflowY: "scroll" }}>
+                        <div
+                          className="bg-white p-4 mt-3"
+                          style={{
+                            boxShadow: "rgb(0 0 0 / 25%) 0px 1px 2px 0px",
+                          }}
+                        >
+                          <Box
+                            component="form"
+                            sx={{
+                              "& > :not(style)": { width: "100%" },
+                            }}
+                          >
+                            <div className="pb-4">
+                              <TextField
+                                required
+                                id="name"
+                                label="Name"
+                                type={"text"}
+                                variant="standard"
+                                sx={{
+                                  width: "100%",
+                                  color: "white",
+                                  fontSize: "14px",
+                                  height: "45px",
+                                  // border: "1px solid #8080804d",
+                                }}
+                                color="warning"
+                              />
+                              <TextField
+                                className="mt-5"
+                                required
+                                id="fname"
+                                label="Mobile"
+                                type={"text"}
+                                variant="standard"
+                                sx={{
+                                  width: "100%",
+                                  color: "white",
+                                  fontSize: "14px",
+                                  height: "45px",
+                                  // border: "1px solid #8080804d",
+                                }}
+                                color="warning"
+                              />
+                            </div>
+                          </Box>
+                        </div>
+                        <div
+                          className="bg-white p-4 mt-3"
+                          style={{
+                            boxShadow: "rgb(0 0 0 / 25%) 0px 1px 2px 0px",
+                          }}
+                        >
+                          <Box
+                            component="form"
+                            sx={{
+                              "& > :not(style)": { width: "100%" },
+                            }}
+                          >
+                            <div className="pb-4">
+                              <div className="d-flex">
+                                <TextField
+                                  className="w-50 mr-5"
+                                  required
+                                  id="name"
+                                  label="Name"
+                                  type={"text"}
+                                  variant="standard"
+                                  sx={{
+                                    width: "100%",
+                                    color: "white",
+                                    fontSize: "14px",
+                                    height: "45px",
+                                    // border: "1px solid #8080804d",
+                                  }}
+                                  color="warning"
+                                />
+                                <TextField
+                                  className="w-50 ml-5 ml-auto"
+                                  required
+                                  id="fname"
+                                  label="Mobile"
+                                  type={"text"}
+                                  variant="standard"
+                                  sx={{
+                                    width: "100%",
+                                    color: "white",
+                                    fontSize: "14px",
+                                    height: "45px",
+                                    // border: "1px solid #8080804d",
+                                  }}
+                                  color="warning"
+                                />
+                              </div>
+                              <TextField
+                                className="mt-5"
+                                required
+                                id="fname"
+                                label="Address (House No, Building, Street, Area)"
+                                type={"text"}
+                                variant="standard"
+                                sx={{
+                                  width: "100%",
+                                  color: "white",
+                                  fontSize: "14px",
+                                  height: "45px",
+                                  // border: "1px solid #8080804d",
+                                }}
+                                color="warning"
+                              />
+                              <TextField
+                                className="mt-5"
+                                required
+                                id="fname"
+                                label="Locality/ Town"
+                                type={"text"}
+                                variant="standard"
+                                sx={{
+                                  width: "100%",
+                                  color: "white",
+                                  fontSize: "14px",
+                                  height: "45px",
+                                  // border: "1px solid #8080804d",
+                                }}
+                                color="warning"
+                              />
+                              <TextField
+                                className="mt-5"
+                                required
+                                id="fname"
+                                label="City/ District"
+                                type={"text"}
+                                variant="standard"
+                                sx={{
+                                  width: "100%",
+                                  color: "white",
+                                  fontSize: "14px",
+                                  height: "45px",
+                                  // border: "1px solid #8080804d",
+                                }}
+                                color="warning"
+                              />
+                            </div>
+                          </Box>
+                        </div>
+
+                        <div
+                          className="bg-white p-4 my-3"
+                          style={{
+                            boxShadow: "rgb(0 0 0 / 25%) 0px 1px 2px 0px",
+                          }}
+                        >
+                          <div>Type of Address *</div>
+                          <div className="d-flex mt-3">
+                            <input
+                              type="radio"
+                              name="radio"
+                              className="form-check mr-2"
+                              style={{ width: "20px" }}
+                            />
+                            Home
+                            <input
+                              type="radio"
+                              name="radio"
+                              className="form-check mr-2 ml-5"
+                              style={{ width: "20px" }}
+                            />
+                            Office
+                          </div>
+                          <hr></hr>
+                          <div className="d-flex align-items-center">
+                            <input
+                              type="checkbox"
+                              className="form-check mr-2"
+                              style={{ width: "18px" }}
+                            />
+                            Make this as my default address
+                          </div>
+                        </div>
+                      </div>
+                      <div
+                        className="d-flex"
+                        style={{
+                          boxShadow: "rgb(0 0 0 / 25%) 0px 1px 2px 0px",
+                        }}
+                      >
+                        <div className="btn btn-dark p-3 text-dark bg-white w-50 rounded-0 border-0">
+                          <b>CANCEL</b>
+                        </div>
+                        <div
+                          className="btn btn-dark p-3 w-50 rounded-0 border-0"
+                          style={{ background: "rgb(255, 63, 108)" }}
+                        >
+                          <b>SAVE</b>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
               </div>
 
               <div id="insider" className="tab-pane fade">
@@ -1302,10 +1720,7 @@ function Profile() {
         </div>
       </div>
 
-      <div
-        id="mobileProfile"
-        style={{background: "#eee", display: "none" }}
-      >
+      <div id="mobileProfile" style={{ background: "#eee", display: "none" }}>
         <div className="d-flex justify-content-center">
           <div
             className="fa fa-user bg-dark justify-content-center d-flex align-items-end position-absolute"
