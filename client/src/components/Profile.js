@@ -16,6 +16,7 @@ import Accordion from "react-bootstrap/Accordion";
 import { NavLink } from "react-router-dom";
 import Box from "@mui/material/Box";
 import TextField from "@mui/material/TextField";
+import Swal from "sweetalert2";
 
 function Profile() {
   window.scroll(0, 0);
@@ -30,6 +31,71 @@ function Profile() {
     } else {
       a.style.display = "block";
       b.style.display = "none";
+    }
+  };
+
+  const [user, setUser] = useState({
+    name: "",
+    email: "",
+    gender: "",
+    number: "",
+    password: "",
+    dob: "",
+    location: "",
+    alternateNumber: "",
+    hint: "",
+  });
+
+  let name, value;
+  const handleInputs = (e) => {
+    console.log(e);
+    name = e.target.name;
+    value = e.target.value;
+
+    setUser({ ...user, [name]: value });
+  };
+
+  const PostData = async (e) => {
+    e.preventDefault();
+    const {
+      name,
+      email,
+      gender,
+      number,
+      password,
+      dob,
+      location,
+      alternateNumber,
+      hint,
+    } = user;
+    const res = await fetch("/edit-profile", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        name,
+        email,
+        gender,
+        number,
+        password,
+        dob,
+        location,
+        alternateNumber,
+        hint,
+      }),
+    });
+    const data = await res.json();
+    if (res.status === 201) {
+      Swal.fire("", "SignUp Successful", "success", {
+        timer: 2200,
+        buttons: false,
+      });
+      console.log("SignUp Successful");
+    } else {
+      Swal.fire("", "Invalid Credentials!", "error", {
+        timer: 2200,
+        buttons: false,
+      });
+      console.log("Invalid Credentials");
     }
   };
   return (
@@ -1098,6 +1164,8 @@ function Profile() {
                             id="fname"
                             label="Full Name"
                             type={"text"}
+                            value={user.fname}
+                            onChange={handleInputs}
                             variant="outlined"
                             sx={{
                               width: "100%",
@@ -1140,6 +1208,8 @@ function Profile() {
                             label="Birthday (dd/mm/yyyy)"
                             type={"text"}
                             variant="outlined"
+                            value={user.dob}
+                            onChange={handleInputs}
                             sx={{
                               width: "100%",
                               color: "white",
@@ -1154,6 +1224,8 @@ function Profile() {
                             required
                             id="dob"
                             label="Location"
+                            value={user.location}
+                            onChange={handleInputs}
                             type={"text"}
                             variant="outlined"
                             sx={{
@@ -1189,6 +1261,8 @@ function Profile() {
                               placeholder="Mobile Number"
                               pattern="[0-9]{10}"
                               name="number"
+                              value={user.alternateNumber}
+                              onChange={handleInputs}
                               style={{ height: "45px", paddingLeft: "54px" }}
                             />
                           </div>
@@ -1197,6 +1271,8 @@ function Profile() {
                             required
                             id="dob"
                             label="Hint name"
+                            value={user.hint}
+                            onChange={handleInputs}
                             type={"text"}
                             variant="outlined"
                             sx={{
@@ -1214,6 +1290,7 @@ function Profile() {
                         <div
                           className="btn btn-danger border-0 rounded-0 w-100 my-2 py-3"
                           style={{ background: "rgb(255, 63, 108)" }}
+                          onClick={PostData}
                         >
                           <b>SAVE DETAILS</b>
                         </div>
