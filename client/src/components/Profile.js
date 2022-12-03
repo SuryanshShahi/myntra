@@ -85,7 +85,7 @@ function Profile() {
     });
     const data = await res.json();
     if (res.status === 201) {
-      Swal.fire("", "SignUp Successful", "success", {
+      Swal.fire("", "Profile Updated", "success", {
         timer: 2200,
         buttons: false,
       });
