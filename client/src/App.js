@@ -25,6 +25,7 @@ import ProfileDetails from "./components/profile/ProfileDetails";
 import Otp from "./components/Otp";
 import LoginUsingPassword from "./components/LoginUsingPassword";
 import ResetPassword from "./components/ResetPassword";
+import Men from "./components/Categories/Men";
 
 const App = () => {
   useEffect(() => {
@@ -55,6 +56,8 @@ const App = () => {
             <Route exact path="/editProfile" component={ProfileDetails} />
             <Route exact path="/password" component={LoginUsingPassword} />
             <Route exact path="/forgot" component={ResetPassword} />
+
+            <Route exact path="/men" component={Men} />
           </div>
         </Switch>
         <Footer />

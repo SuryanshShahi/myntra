@@ -4,7 +4,8 @@ const redis = require('../redis')
 const client = require('../services/messaging')
 const jwt = require('jsonwebtoken')
 const bcrypt = require('bcrypt')
-const transporter = require('../services/email')
+// const main = require('../services/email')
+const nodemailer = require('nodemailer');
 
 const generateAccessToken = (user) => {
     return jwt.sign(user, process.env.ACCESS_TOKEN, { expiresIn: '5h' })
@@ -15,7 +16,7 @@ module.exports.login = async (req, res, next) => {
         const { number } = req.body;
         const mobile = number;
         //check if user exists`
-        const userData = await query.checkUserExists(mobile)
+        const userData = await query.getUserDetails(mobile)
         if (!userData) {
             const err = new Error('Cannot fetch user details from database')
             return next(err)
@@ -26,6 +27,7 @@ module.exports.login = async (req, res, next) => {
             const newUserId = await query.createUser(mobile)
             userId = newUserId.rows[0].id
             res.status(201)
+            //ok byeeeeeeee
         }
         //create otp and store in redis
         const otp = await generateOtp()
@@ -47,7 +49,6 @@ module.exports.login = async (req, res, next) => {
 
     }
     catch (err) {
-        console.log(err)
         next(err);
     }
 }
@@ -55,7 +56,7 @@ module.exports.login = async (req, res, next) => {
 module.exports.otpLogin = async (req, res, next) => {
     try {
         const { mobile, otp } = req.body;
-        const userIdObject = await query.checkUserExists(mobile)
+        const userIdObject = await query.getUserDetails(mobile)
         if (!userIdObject) {
             const err = new Error('Cannot fetch user details from database')
             return next(err)
@@ -81,7 +82,7 @@ module.exports.otpLogin = async (req, res, next) => {
             return next(err)
         }
         let userId = userIdObject.rows[0].id
-        const userData = { mobile, userId }
+        const userData = { loginId: mobile, userId }
         const accessToken = generateAccessToken(userData)
         res.cookie('jwt', accessToken, {
             httpOnly: true,
@@ -89,6 +90,7 @@ module.exports.otpLogin = async (req, res, next) => {
         })
         res.json({ message })
     }
+    //the coders of this code are doomed
     catch (err) {
         next(err)
     }
@@ -97,7 +99,7 @@ module.exports.otpLogin = async (req, res, next) => {
 module.exports.passwordLogin = async (req, res, next) => {
     try {
         const { email, password } = req.body;
-        const userIdObject = await query.checkUserExists(email)
+        const userIdObject = await query.getUserDetails(email)
         if (!userIdObject) {
             const err = new Error('Cannot fetch user details from database')
             return next(err)
@@ -117,7 +119,7 @@ module.exports.passwordLogin = async (req, res, next) => {
             return next(err)
         }
         let userId = userIdObject.rows[0].id
-        const userData = { email, userId }
+        const userData = { loginId: email, userId }
         const accessToken = generateAccessToken(userData)
         res.cookie('jwt', accessToken, {
             httpOnly: true,
@@ -125,6 +127,9 @@ module.exports.passwordLogin = async (req, res, next) => {
         })
         res.json({ "message": "Logged in successfully!" })
     }
+    //who you????????????
+    //who you think you??????
+    //which year?????????
     catch (err) {
         next(err)
     }
@@ -132,57 +137,74 @@ module.exports.passwordLogin = async (req, res, next) => {
 
 module.exports.createAccount = async (req, res, next) => {
     try {
-        const { password, name, email, gender, number1, hintName, location } = req.body;
+        const { password, name, email, gender, number1, hintName, location, birthDate } = req.body;
         const { userId } = req.user
         const bcryptRounds = 10
         const hashedPassword = bcrypt.hashSync(password, bcryptRounds)
-        await query.addNewUserDetails(userId, name, hashedPassword, email, gender, location, number1, hintName);
+        await query.addNewUserDetails(userId, name, hashedPassword, email, gender, location, number1, hintName, birthDate);
         res.status(201).json({ "message": "User Sign up successful!" })
     }
     catch (err) {
         next(err)
-    }
+    }
 }
 
-module.exports.forgetPassword = async (req, res, next) => {
-    try {
-        //email ya text kardo password reset link ko
-        const { loginId } = req.body;
-        const userIdObject = await query.checkUserExists(loginId)
-        if (!userIdObject) {
-            const err = new Error('Cannot fetch user details from database')
-            return next(err)
-        }
-        if (userIdObject.rows.length === 0) {
-            const message = 'Account does not exist'
-            const err = new Error(message)
-            err.clientMessage = message
-            err.statusCode = 400
-            return next(err)
-        }
-        //send email/mobile with password reset link
-        if (loginId.includes('@')) { //email
-            const mailOptions = {
-                from: process.env.EMAIL,
-                to: loginId,
-                subject: 'Password Email Mail',
-                text: 'Hiiiiiiiiiii'
-            };
+// module.exports.forgetPassword = async (req, res, next) => {
+//     try {
+//         //email ya text kardo password reset link ko
+//         const { loginId } = req.body;
+//         const userIdObject = await query.getUserDetails(loginId)
+//         if (!userIdObject) {
+//             const err = new Error('Cannot fetch user details from database')
+//             return next(err)
+//         }
+//         if (userIdObject.rows.length === 0) {
+//             const message = 'Account does not exist'
+//             const err = new Error(message)
+//             err.clientMessage = message
+//             err.statusCode = 400
+//             return next(err)
+//         }
+//         //send email/mobile with password reset link
+//         if (loginId.includes('@')) { //email
+//             const transporter = nodemailer.createTransport({
+//                 service: 'SendPulse',
+//                 auth: {
+//                     user: 'tanujatiwari444@gmail.com',
+//                     pass: 'Suryansh@5476'
+//                 }
+//             });
 
-            transporter.sendMail(mailOptions, function (error, info) {
-                if (error) {
-                    console.log(error);
-                } else {
-                    console.log('Email sent: ' + info.response);
-                }
-            });
-        }
-    }
-    catch (err) {
-        console.log(err)
-        next(err)
-    }
-}
+//             const mailOptions = {
+//                 from: 'tanujatiwari444@gmail.com', // sender address
+//                 to: 'tanujatiwari04@gmail.com', // list of receivers
+//                 subject: 'Hello', // Subject line
+//                 text: 'Hello world?', // plain text body
+//                 html: '<b>Hello world?</b>' // html body
+//             };
+//             //daddu paaagalllllll
+//             //chitta daddu toa tappe
+//             //tap chitte daddu aa
+//             //hello, my name is zuzi
+//             // A zuzi with a zee
+
+//             transporter.sendMail(mailOptions, (error, info) => {
+//                 if (error) {
+//                     return console.log(error);
+//                 }
+//                 console.log('Message sent: %s', info.messageId);
+//                 res.send('email sent')
+//             });
+//         }
+//         else { //mobile number
+
+//         }
+//     }
+//     catch (err) {
+//         console.log(err)
+//         next(err)
+//     }
+// }
 
 module.exports.logout = async (req, res, next) => {
     try {
@@ -194,26 +216,15 @@ module.exports.logout = async (req, res, next) => {
     }
 }
 
-module.exports.getAddresses = async (req, res, next) => {
-    try {
-        const { userId } = req.user
-        const addressesObject = await query.getUserAddresses(userId);
-        const allAddresses = addressesObject.rows
-        res.json({ "data": allAddresses })
-    }
-    catch (err) {
-        next(err)
-    }
-}
-
 module.exports.newAddress = async (req, res, next) => {
     try {
-        const { fullName, mobile, pincode, state, address, locality, city, typeOfAddress, isDefaultAddress, isOpenOnSaturday, isOpenOnSunday } = req.body
+        const { full_name, mobile, pincode, state, address, locality, city, typeOfAddress, isDefaultAddress, isOpenOnSaturday, isOpenOnSunday } = req.body
         const { userId } = req.user
-        await query.addUserAddress(userId, fullName, mobile, pincode, state, address, locality, city, typeOfAddress, isDefaultAddress, isOpenOnSaturday, isOpenOnSunday)
+        await query.addUserAddress(userId, full_name, mobile, pincode, state, address, locality, city, typeOfAddress, isDefaultAddress, isOpenOnSaturday, isOpenOnSunday)
         return res.status(201).json({ "message": "Address added successfully" })
     }
     catch (err) {
+        console.log(err);
         next(err)
     }
 }
@@ -221,11 +232,12 @@ module.exports.newAddress = async (req, res, next) => {
 module.exports.updateAddress = async (req, res, next) => {
     try {
         const { id } = req.params
-        const { fullName, mobile, pincode, state, address, locality, city, typeOfAddress, isDefaultAddress, isOpenOnSaturday, isOpenOnSunday } = req.body
-        await query.editUserAddress(id, fullName, mobile, pincode, state, address, locality, city, typeOfAddress, isDefaultAddress, isOpenOnSaturday, isOpenOnSunday)
+        const { full_name, mobile, pincode, state, address, locality, city, typeOfAddress, isDefaultAddress, isOpenOnSaturday, isOpenOnSunday } = req.body
+        await query.editUserAddress(id, full_name, mobile, pincode, state, address, locality, city, typeOfAddress, isDefaultAddress, isOpenOnSaturday, isOpenOnSunday)
         return res.status(201).json({ "message": "Address edited successfully" })
     }
     catch (err) {
+        console.log(err);
         next(err)
     }
 }
@@ -240,6 +252,37 @@ module.exports.deleteAddress = async (req, res, next) => {
     catch (err) {
         next(err)
     }
+}
+
+module.exports.profile = async (req, res, next) => {
+    try {
+        const { loginId, userId } = req.user
+        const [userObject, addressesObject] = await Promise.all([query.getUserDetails(loginId), query.getUserAddresses(userId)])
+        const userDetails = { ...userObject.rows[0] }
+        if (addressesObject.rows.length === 0) {
+            userDetails.addresses = [];
+        }
+        else {
+            userDetails.addresses = addressesObject.rows;
+        }
+        res.json({ "data": userDetails })
+    }
+    catch (err) {
+        next(err)
+    }
+}
+
+module.exports.editProfile = async (req, res, next) => {
+    try {
+        const { userId } = req.user
+        const { full_name, email, gender, hint_name, alternate_mobile, birth_date, location } = req.body;
+        await query.editProfile(userId, full_name, email, gender, hint_name, alternate_mobile, birth_date, location)
+        res.json({ "message": "Edited profile successfully!" })
+    }
+    catch (err) {
+        console.log(err)
+        next(err)
+    }
 }
 
 module.exports.notFound = (req, res, next) => {

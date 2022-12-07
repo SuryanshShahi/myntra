@@ -17,9 +17,14 @@ import { NavLink } from "react-router-dom";
 import Box from "@mui/material/Box";
 import TextField from "@mui/material/TextField";
 import Swal from "sweetalert2";
+import axios from "axios";
 
 function Profile() {
-  window.scroll(0, 0);
+  useEffect(() => {
+    window.scroll(0, 0);
+    getData();
+  }, []);
+
   const [isActive, setActive] = useState(false);
 
   const setAddress = () => {
@@ -34,57 +39,50 @@ function Profile() {
     }
   };
 
-  const [user, setUser] = useState({
-    name: "",
-    email: "",
-    gender: "",
-    number: "",
-    password: "",
-    dob: "",
-    location: "",
-    alternateNumber: "",
-    hint: "",
-  });
-
   let name, value;
-  const handleInputs = (e) => {
+
+  const EditInputs = (e) => {
     console.log(e);
     name = e.target.name;
     value = e.target.value;
 
-    setUser({ ...user, [name]: value });
+    setUserData({ ...userData, [name]: value });
   };
 
   const PostData = async (e) => {
     e.preventDefault();
     const {
-      name,
+      full_name,
       email,
       gender,
-      number,
+      mobile,
       password,
       dob,
       location,
-      alternateNumber,
-      hint,
-    } = user;
+      alternate_mobile,
+      hint_name,
+    } = userData;
+    const birth = dob.split("-"); //[dd, mm, yyyy]
+    const birth_date = `${birth[2]}-${birth[1]}-${birth[0]}`;
+    console.log(userData);
+    // console.log(birthDate);
     const res = await fetch("/edit-profile", {
-      method: "POST",
+      method: "PATCH",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
-        name,
+        full_name,
         email,
         gender,
-        number,
+        mobile,
         password,
-        dob,
+        birth_date,
         location,
-        alternateNumber,
-        hint,
+        alternate_mobile,
+        hint_name,
       }),
     });
     const data = await res.json();
-    if (res.status === 201) {
+    if (res.status === 200) {
       Swal.fire("", "Profile Updated", "success", {
         timer: 2200,
         buttons: false,
@@ -98,6 +96,113 @@ function Profile() {
       console.log("Invalid Credentials");
     }
   };
+
+  const [userAddress, setUserAddress] = useState([]);
+  const UpdateAddress = (e) => {
+    console.log(e);
+    name = e.target.name;
+    value = e.target.value;
+
+    setUserAddress({ ...userAddress, [name]: value });
+  };
+  const PostAddress = async (e) => {
+    e.preventDefault();
+    const {
+      full_name,
+      mobile,
+      address,
+      state,
+      city,
+      locality,
+      pincode,
+      typeOfAddress,
+    } = userAddress;
+    console.log(userAddress);
+    const res = await fetch("/addresses/new", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        full_name,
+        mobile,
+        address,
+        state,
+        city,
+        locality,
+        pincode,
+        typeOfAddress,
+      }),
+    });
+    const data = await res.json();
+    if (res.status === 200 || res.status === 201) {
+      Swal.fire("", "Address Updated", "success", {
+        timer: 2200,
+        buttons: false,
+      });
+      console.log("SignUp Successful");
+    } else {
+      Swal.fire("", "Invalid Credentials!", "error", {
+        timer: 2200,
+        buttons: false,
+      });
+      console.log("Invalid Credentials");
+    }
+  };
+  const EditAddress = async (e) => {
+    e.preventDefault();
+    const {
+      full_name,
+      mobile,
+      address,
+      state,
+      city,
+      locality,
+      pincode,
+      typeOfAddress,
+    } = userAddress;
+    console.log(userAddress.id);
+    const res = await fetch(`/addresses/${userAddress.id}/update`, {
+      method: "PATCH",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        full_name,
+        mobile,
+        address,
+        state,
+        city,
+        locality,
+        pincode,
+        typeOfAddress,
+      }),
+    });
+    const data = await res.json();
+    if (res.status === 200 || res.status === 201) {
+      Swal.fire("", "Address Updated", "success", {
+        timer: 2200,
+        buttons: false,
+      });
+      console.log("SignUp Successful");
+    } else {
+      Swal.fire("", "Invalid Credentials!", "error", {
+        timer: 2200,
+        buttons: false,
+      });
+      console.log("Invalid Credentials");
+    }
+  };
+
+  const [userData, setUserData] = useState([]);
+  const getData = () => {
+    console.log(userData);
+    axios
+      .get("/profile")
+      .then((e) => {
+        setUserData(e.data.data);
+        setUserAddress(e.data.data.addresses[0]);
+        console.log(e);
+      })
+      .catch((err) => console.log(err));
+  };
+
   return (
     <section id="userProfile">
       <div className="backdrop" id="backdrop">
@@ -1089,16 +1194,56 @@ function Profile() {
                       </div>
                       <hr style={{ color: "#808080fa" }}></hr>
                       <div className="mt-5 mx-5">
-                        {userProfile.map((e) => {
-                          return (
-                            <div style={{ fontSize: "16px" }}>
-                              <div className="d-flex text-dark mb-4" key={e.id}>
-                                <div>{e.Field}</div>
-                                <div className="ml-auto">{e.value}</div>
-                              </div>
+                        <div style={{ fontSize: "16px" }}>
+                          <div className="d-flex text-dark mb-4">
+                            <div>Full Name</div>
+                            <div className="ml-auto">
+                              {userData.full_name || "- not added -"}
                             </div>
-                          );
-                        })}
+                          </div>
+                          <div className="d-flex text-dark mb-4">
+                            <div>Mobile Number</div>
+                            <div className="ml-auto">
+                              {userData.mobile || "- not added -"}
+                            </div>
+                          </div>
+                          <div className="d-flex text-dark mb-4">
+                            <div>Email ID</div>
+                            <div className="ml-auto">
+                              {userData.email || "- not added -"}
+                            </div>
+                          </div>
+                          <div className="d-flex text-dark mb-4">
+                            <div>Gender</div>
+                            <div className="ml-auto">
+                              {userData.gender || "- not added -"}
+                            </div>
+                          </div>
+                          <div className="d-flex text-dark mb-4">
+                            <div>Date of Birth</div>
+                            <div className="ml-auto">
+                              {userData.birth_date || "- not added -"}
+                            </div>
+                          </div>
+                          <div className="d-flex text-dark mb-4">
+                            <div>Location</div>
+                            <div className="ml-auto">
+                              {userData.location || "- not added -"}
+                            </div>
+                          </div>
+                          <div className="d-flex text-dark mb-4">
+                            <div>Alternate Mobile</div>
+                            <div className="ml-auto">
+                              {userData.alternate_mobile || "- not added -"}
+                            </div>
+                          </div>
+                          <div className="d-flex text-dark mb-4">
+                            <div>Hint Name</div>
+                            <div className="ml-auto">
+                              {userData.hint_name || "- not added -"}
+                            </div>
+                          </div>
+                        </div>
                       </div>
                       <div className="mx-5 mt-5">
                         <div
@@ -1120,9 +1265,9 @@ function Profile() {
                       boxShadow: "0 1px 2px 0 rgb(0 0 0 / 25%)",
                     }}
                   >
-                    <div className="w-75">
+                    <div className="w-100 mx-5 px-4">
                       <div
-                        className="mb-4 mx-5"
+                        className="mb-4"
                         style={{ fontWeight: "700", fontSize: "20px" }}
                       >
                         Edit Details
@@ -1136,8 +1281,12 @@ function Profile() {
                           <div className="">
                             <div style={{ color: "grey" }}>Mobile Number</div>
                             <div className="d-flex align-items-center">
-                              <div>xxxxxxxxxx</div>
-                              <div className="fa fa-check-circle text-success ml-3"></div>
+                              {userData.mobile}
+                              <div>
+                                {userData.mobile && (
+                                  <div className="fa fa-check-circle text-success ml-3"></div>
+                                )}
+                              </div>
                             </div>
                           </div>
                           <div
@@ -1161,81 +1310,112 @@ function Profile() {
                         <div className="">
                           <TextField
                             required
-                            id="fname"
+                            name="full_name"
                             label="Full Name"
                             type={"text"}
-                            value={user.fname}
-                            onChange={handleInputs}
-                            variant="outlined"
-                            sx={{
-                              width: "100%",
-                              color: "white",
-                              fontSize: "14px",
-                              height: "45px",
-                              // border: "1px solid #8080804d",
+                            inputProps={{
+                              style: {
+                                height: "18px",
+                              },
                             }}
-                            color="warning"
-                          />
-                          <div className="d-flex w-100 my-4">
-                            <div
-                              className="w-50 p-2 d-flex justify-content-center"
-                              style={{ border: "1px solid #8080804d" }}
-                            >
-                              <input
-                                className="form-check mr-2"
-                                name="radio"
-                                type="radio"
-                                style={{ width: "20px" }}
-                              />
-                              <label>Male</label>
-                            </div>
-                            <div
-                              className="w-50 p-2 d-flex justify-content-center"
-                              style={{ border: "1px solid #8080804d" }}
-                            >
-                              <input
-                                className="form-check mr-2"
-                                name="radio"
-                                type="radio"
-                                style={{ width: "20px" }}
-                              />
-                              <label>Female</label>
-                            </div>
-                          </div>
-                          <TextField
-                            required
-                            id="dob"
-                            label="Birthday (dd/mm/yyyy)"
-                            type={"text"}
+                            value={userData.full_name}
+                            onChange={EditInputs}
                             variant="outlined"
-                            value={user.dob}
-                            onChange={handleInputs}
                             sx={{
                               width: "100%",
                               color: "white",
                               fontSize: "14px",
-                              height: "45px",
-                              // border: "1px solid #8080804d",
                             }}
                             color="warning"
                           />
                           <TextField
                             className="mt-4"
                             required
-                            id="dob"
-                            label="Location"
-                            value={user.location}
-                            onChange={handleInputs}
+                            name="email"
+                            label="Email"
                             type={"text"}
+                            value={userData.email}
+                            onChange={EditInputs}
                             variant="outlined"
                             sx={{
                               width: "100%",
                               color: "white",
                               fontSize: "14px",
-                              height: "45px",
-                              // border: "1px solid #8080804d",
                             }}
                             color="warning"
+                            inputProps={{
+                              style: {
+                                height: "18px",
+                              },
+                            }}
+                          />
+                          <div className="d-flex w-100 my-4">
+                            <div
+                              className="w-50 p-2 d-flex justify-content-center align-items-center"
+                              style={{
+                                border: "1px solid #8080804d",
+                                height: "50px",
+                              }}
+                            >
+                              <input
+                                className="form-check mr-2"
+                                name="gender"
+                                type="radio"
+                                value={userData.gender}
+                                onChange={EditInputs}
+                                style={{ width: "20px" }}
+                              />
+                              <label>Male</label>
+                            </div>
+                            <div
+                              className="w-50 p-2 d-flex justify-content-center align-items-center"
+                              style={{
+                                border: "1px solid #8080804d",
+                                height: "50px",
+                              }}
+                            >
+                              <input
+                                className="form-check mr-2"
+                                name="gender"
+                                type="radio"
+                                value={userData.gender}
+                                onChange={EditInputs}
+                                style={{ width: "20px" }}
+                              />
+                              <label>Female</label>
+                            </div>
+                          </div>
+                          <input
+                            type="date"
+                            className="form-control rounded-0 shadow-none text-dark"
+                            value={userData.dob}
+                            name="dob"
+                            onChange={EditInputs}
+                            style={{
+                              width: "100%",
+                              color: "white",
+                              height: "50px",
+                            }}
+                          />
+                          <TextField
+                            className="mt-4"
+                            required
+                            label="Location"
+                            name="location"
+                            value={userData.location}
+                            onChange={EditInputs}
+                            type={"text"}
+                            variant="outlined"
+                            sx={{
+                              width: "100%",
+                              color: "white",
+                            }}
+                            color="warning"
+                            inputProps={{
+                              style: {
+                                height: "18px",
+                              },
+                            }}
                           />
                           <div
                             className="my-4"
@@ -1260,47 +1440,227 @@ function Profile() {
                               type="tel"
                               placeholder="Mobile Number"
                               pattern="[0-9]{10}"
-                              name="number"
-                              value={user.alternateNumber}
-                              onChange={handleInputs}
-                              style={{ height: "45px", paddingLeft: "54px" }}
+                              name="alternate_mobile"
+                              value={userData.alternate_mobile}
+                              onChange={EditInputs}
+                              style={{ height: "50px", paddingLeft: "54px" }}
                             />
                           </div>
                           <TextField
                             className="mt-4"
                             required
-                            id="dob"
                             label="Hint name"
-                            value={user.hint}
-                            onChange={handleInputs}
+                            name="hint_name"
+                            value={userData.hint_name}
+                            onChange={EditInputs}
                             type={"text"}
                             variant="outlined"
                             sx={{
                               width: "100%",
                               color: "white",
-                              fontSize: "14px",
-                              height: "45px",
-                              // border: "1px solid #8080804d",
                             }}
                             color="warning"
+                            inputProps={{
+                              style: {
+                                height: "18px",
+                              },
+                            }}
                           />
                         </div>
                       </Box>
-                      <div className="my-5">
+                      <div className="my-4">
                         <div
-                          className="btn btn-danger border-0 rounded-0 w-100 my-2 py-3"
-                          style={{ background: "rgb(255, 63, 108)" }}
+                          className="btn btn-danger border-0 rounded-0 w-100 justify-content-center d-flex align-items-center my-2"
+                          style={{
+                            background: "rgb(255, 63, 108)",
+                            height: "50px",
+                            fontWeight: "500",
+                          }}
                           onClick={PostData}
                         >
-                          <b>SAVE DETAILS</b>
+                          SAVE DETAILS
                         </div>
                       </div>
                       <div className="">
                         <div
-                          className="btn btn-dark bg-transparent text-dark rounded-0 w-100 py-3"
-                          style={{ border: "1px solid #8080804d" }}
+                          className="btn btn-dark bg-transparent text-dark rounded-0 w-100 justify-content-center d-flex align-items-center"
+                          style={{
+                            border: "1px solid #8080804d",
+                            height: "50px",
+                            fontWeight: "500",
+                          }}
+                          data-target="#mymodal1"
+                          data-toggle="modal"
                         >
-                          <b>CHANGE PASSWORD</b>
+                          CHANGE PASSWORD
+                        </div>
+                      </div>
+
+                      <div className="modal fade" id="mymodal1">
+                        <div className="modal-dialog modal-md">
+                          <div className="modal-content">
+                            <div
+                              className="px-4 pt-4 pb-3"
+                              style={{ fontSize: "20px", fontWeight: "500" }}
+                            >
+                              Change Password
+                              <hr style={{ color: "#80808066" }}></hr>
+                            </div>
+
+                            <div>
+                              <div className="px-4 pb-4">
+                                <Box
+                                  component="form"
+                                  sx={{
+                                    "& > :not(style)": { width: "100%" },
+                                  }}
+                                >
+                                  <div className="">
+                                    <TextField
+                                      required
+                                      name="oldPassword"
+                                      label="Old Password"
+                                      type={"password"}
+                                      value={userData.oldPassword}
+                                      onChange={EditInputs}
+                                      variant="outlined"
+                                      sx={{
+                                        width: "100%",
+                                        color: "white",
+                                      }}
+                                      color="warning"
+                                      inputProps={{
+                                        style: {
+                                          height: "18px",
+                                        },
+                                      }}
+                                    />
+                                    <TextField
+                                      className="mt-4"
+                                      required
+                                      name="newPassword"
+                                      label="New Password"
+                                      type={"password"}
+                                      value={userData.newPassword}
+                                      onChange={EditInputs}
+                                      variant="outlined"
+                                      sx={{
+                                        width: "100%",
+                                        color: "white",
+                                      }}
+                                      color="warning"
+                                      inputProps={{
+                                        style: {
+                                          height: "18px",
+                                          borderRadius: "0",
+                                        },
+                                      }}
+                                    />
+                                    <div className="d-flex mt-2">
+                                      <div className="">
+                                        <div
+                                          className="px-2 align-items-center d-flex justify-content-center"
+                                          style={{
+                                            background: "#eee",
+                                            height: "30px",
+                                            color: "grey",
+                                            fontSize: "13px",
+                                            width: "fit-content",
+                                          }}
+                                        >
+                                          8 Characters
+                                        </div>
+                                      </div>
+                                      <div className="px-2">
+                                        <div
+                                          className="px-2 align-items-center d-flex justify-content-center"
+                                          style={{
+                                            background: "#eee",
+                                            height: "30px",
+                                            color: "grey",
+                                            fontSize: "13px",
+                                            width: "fit-content",
+                                          }}
+                                        >
+                                          1 Special
+                                        </div>
+                                      </div>
+                                      <div className="">
+                                        <div
+                                          className="px-2 align-items-center d-flex justify-content-center"
+                                          style={{
+                                            background: "#eee",
+                                            height: "30px",
+                                            color: "grey",
+                                            fontSize: "13px",
+                                            width: "fit-content",
+                                          }}
+                                        >
+                                          1 Uppercase
+                                        </div>
+                                      </div>
+                                      <div className="pl-2">
+                                        <div
+                                          className="px-2 align-items-center d-flex justify-content-center"
+                                          style={{
+                                            background: "#eee",
+                                            height: "30px",
+                                            color: "grey",
+                                            fontSize: "13px",
+                                            width: "fit-content",
+                                          }}
+                                        >
+                                          1 Numeric
+                                        </div>
+                                      </div>
+                                    </div>
+                                    <TextField
+                                      className="my-4"
+                                      required
+                                      name="confirmPassword"
+                                      label="Confirm Password"
+                                      type={"password"}
+                                      value={userData.confirmPassword}
+                                      onChange={EditInputs}
+                                      variant="outlined"
+                                      sx={{
+                                        width: "100%",
+                                        color: "white",
+                                      }}
+                                      color="warning"
+                                      inputProps={{
+                                        style: {
+                                          height: "18px",
+                                          borderRadius: "0",
+                                        },
+                                      }}
+                                    />
+                                  </div>
+                                  <div
+                                    className="mt-3 btn btn-dark w-100 border-0 rounded-0 align-items-center d-flex justify-content-center"
+                                    style={{
+                                      background: "rgb(255, 63, 108)",
+                                      height: "45px",
+                                    }}
+                                    onClick={PostData}
+                                  >
+                                    <b>CHANGE</b>
+                                  </div>
+                                  <div
+                                    className="mt-4 btn btn-dark bg-white w-100 rounded-0 align-items-center d-flex justify-content-center"
+                                    style={{
+                                      border: "1px solid rgb(255, 63, 108)",
+                                      color: "rgb(255, 63, 108)",
+                                      height: "45px",
+                                    }}
+                                    data-dismiss="modal"
+                                  >
+                                    <b>CANCEL</b>
+                                  </div>
+                                </Box>
+                              </div>
+                            </div>
+                          </div>
                         </div>
                       </div>
                     </div>
@@ -1359,7 +1719,7 @@ function Profile() {
                   >
                     Saved VPA
                   </div>
-                  <div className="col-4 px-2">
+                  <div className="col-6 px-2">
                     <div
                       className="p-3 rounded"
                       style={{ boxShadow: "0px 1px 3px rgb(40 44 63 / 30%)" }}
@@ -1418,6 +1778,8 @@ function Profile() {
                       fontWeight: "600",
                       height: "fit-content",
                     }}
+                    data-target="#mymodal"
+                    data-toggle="modal"
                   >
                     + ADD NEW ADDRESS
                   </div>
@@ -1441,28 +1803,37 @@ function Profile() {
                         background: "#F5F5F6",
                       }}
                     >
-                      HOME
+                      {userAddress.typeOfAddress || "HOME"}
                     </div>
                   </div>
                   <div
                     className="p-3 py-2"
-                    style={{ color: "#696E79" }}
+                    style={{
+                      color: "#696E79",
+                      fontSize: "14px",
+                      lineHeight: "0",
+                    }}
                     onClick={setAddress}
                   >
-                    aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
-                    <br></br>
-                    aaaaaaaaaaaaaaaaaaaaaaaaaaaa<br></br>aaaaaaaaaaaaaaaaaaaaa
-                    <br></br>aaaaaaaa
+                    <div>{userAddress.address},</div>
+                    <div className="pt-3">{userAddress.locality}</div>
+                    <div className="pt-3">
+                      {userAddress.city} - {userAddress.pincode}
+                    </div>
+                    <div className="pt-3">{userAddress.state}</div>
                   </div>
                   <div id="default">
                     <div className="pl-3" style={{ color: "#696E79" }}>
-                      Mobile: xxxxxxxxxx
+                      Mobile: {userAddress.mobile}
                     </div>
                     <hr></hr>
                     <div className="row">
                       <div
                         className="text-center col-6"
-                        style={{ borderRight: "1px solid #8080804d" }}
+                        style={{
+                          borderRight: "1px solid #8080804d",
+                          cursor: "pointer",
+                        }}
                         data-target="#mymodal"
                         data-toggle="modal"
                       >
@@ -1476,7 +1847,10 @@ function Profile() {
                           EDIT
                         </div>
                       </div>
-                      <div className="text-center col-6">
+                      <div
+                        className="text-center col-6"
+                        style={{ cursor: "pointer" }}
+                      >
                         <div
                           style={{
                             color: "#526cd0",
@@ -1545,7 +1919,12 @@ function Profile() {
                     <div className="row">
                       <div
                         className="text-center col-6"
-                        style={{ borderRight: "1px solid #8080804d" }}
+                        style={{
+                          borderRight: "1px solid #8080804d",
+                          cursor: "pointer",
+                        }}
+                        data-target="#mymodal"
+                        data-toggle="modal"
                       >
                         <div
                           style={{
@@ -1557,7 +1936,10 @@ function Profile() {
                           EDIT
                         </div>
                       </div>
-                      <div className="text-center col-6">
+                      <div
+                        className="text-center col-6"
+                        style={{ cursor: "pointer" }}
+                      >
                         <div
                           style={{
                             color: "#526cd0",
@@ -1581,6 +1963,7 @@ function Profile() {
                       <div
                         className="p-3 bg-white position-sticky"
                         style={{
+                          fontWeight: "500",
                           top: "0",
                           boxShadow: "rgb(0 0 0 / 25%) 0px 1px 2px 0px",
                         }}
@@ -1589,7 +1972,7 @@ function Profile() {
                       </div>
                       <div style={{ height: "70vh", overflowY: "scroll" }}>
                         <div
-                          className="bg-white p-4 mt-3"
+                          className="bg-white p-4 mt-2"
                           style={{
                             boxShadow: "rgb(0 0 0 / 25%) 0px 1px 2px 0px",
                           }}
@@ -1603,32 +1986,32 @@ function Profile() {
                             <div className="pb-4">
                               <TextField
                                 required
-                                id="name"
+                                name="full_name"
                                 label="Name"
+                                value={userAddress.full_name}
+                                onChange={UpdateAddress}
                                 type={"text"}
                                 variant="standard"
                                 sx={{
                                   width: "100%",
                                   color: "white",
                                   fontSize: "14px",
-                                  height: "45px",
-                                  // border: "1px solid #8080804d",
                                 }}
                                 color="warning"
                               />
                               <TextField
                                 className="mt-5"
                                 required
-                                id="fname"
+                                name="mobile"
                                 label="Mobile"
+                                value={userAddress.mobile}
+                                onChange={UpdateAddress}
                                 type={"text"}
                                 variant="standard"
                                 sx={{
                                   width: "100%",
                                   color: "white",
                                   fontSize: "14px",
-                                  height: "45px",
-                                  // border: "1px solid #8080804d",
                                 }}
                                 color="warning"
                               />
@@ -1636,7 +2019,7 @@ function Profile() {
                           </Box>
                         </div>
                         <div
-                          className="bg-white p-4 mt-3"
+                          className="bg-white p-4 mt-2"
                           style={{
                             boxShadow: "rgb(0 0 0 / 25%) 0px 1px 2px 0px",
                           }}
@@ -1652,32 +2035,32 @@ function Profile() {
                                 <TextField
                                   className="w-50 mr-5"
                                   required
-                                  id="name"
-                                  label="Name"
-                                  type={"text"}
+                                  name="pincode"
+                                  label="Pincode"
+                                  type="tel"
+                                  value={userAddress.pincode}
+                                  onChange={UpdateAddress}
                                   variant="standard"
                                   sx={{
                                     width: "100%",
                                     color: "white",
                                     fontSize: "14px",
-                                    height: "45px",
-                                    // border: "1px solid #8080804d",
                                   }}
                                   color="warning"
                                 />
                                 <TextField
                                   className="w-50 ml-5 ml-auto"
                                   required
-                                  id="fname"
-                                  label="Mobile"
+                                  name="state"
+                                  label="State"
                                   type={"text"}
+                                  value={userAddress.state}
+                                  onChange={UpdateAddress}
                                   variant="standard"
                                   sx={{
                                     width: "100%",
                                     color: "white",
                                     fontSize: "14px",
-                                    height: "45px",
-                                    // border: "1px solid #8080804d",
                                   }}
                                   color="warning"
                                 />
@@ -1685,48 +2068,48 @@ function Profile() {
                               <TextField
                                 className="mt-5"
                                 required
-                                id="fname"
+                                name="address"
                                 label="Address (House No, Building, Street, Area)"
                                 type={"text"}
+                                value={userAddress.address}
+                                onChange={UpdateAddress}
                                 variant="standard"
                                 sx={{
                                   width: "100%",
                                   color: "white",
                                   fontSize: "14px",
-                                  height: "45px",
-                                  // border: "1px solid #8080804d",
                                 }}
                                 color="warning"
                               />
                               <TextField
                                 className="mt-5"
                                 required
-                                id="fname"
+                                name="locality"
                                 label="Locality/ Town"
                                 type={"text"}
+                                value={userAddress.locality}
+                                onChange={UpdateAddress}
                                 variant="standard"
                                 sx={{
                                   width: "100%",
                                   color: "white",
                                   fontSize: "14px",
-                                  height: "45px",
-                                  // border: "1px solid #8080804d",
                                 }}
                                 color="warning"
                               />
                               <TextField
                                 className="mt-5"
                                 required
-                                id="fname"
+                                name="city"
                                 label="City/ District"
                                 type={"text"}
+                                value={userAddress.city}
+                                onChange={UpdateAddress}
                                 variant="standard"
                                 sx={{
                                   width: "100%",
                                   color: "white",
                                   fontSize: "14px",
-                                  height: "45px",
-                                  // border: "1px solid #8080804d",
                                 }}
                                 color="warning"
                               />
@@ -1735,7 +2118,7 @@ function Profile() {
                         </div>
 
                         <div
-                          className="bg-white p-4 my-3"
+                          className="bg-white p-4 my-2"
                           style={{
                             boxShadow: "rgb(0 0 0 / 25%) 0px 1px 2px 0px",
                           }}
@@ -1744,14 +2127,18 @@ function Profile() {
                           <div className="d-flex mt-3">
                             <input
                               type="radio"
-                              name="radio"
+                              name="typeOfAddress"
+                              value="home"
+                              onChange={UpdateAddress}
                               className="form-check mr-2"
                               style={{ width: "20px" }}
                             />
                             Home
                             <input
                               type="radio"
-                              name="radio"
+                              name="typeOfAddress"
+                              value="home"
+                              onChange={UpdateAddress}
                               className="form-check mr-2 ml-5"
                               style={{ width: "20px" }}
                             />
@@ -1774,12 +2161,16 @@ function Profile() {
                           boxShadow: "rgb(0 0 0 / 25%) 0px 1px 2px 0px",
                         }}
                       >
-                        <div className="btn btn-dark p-3 text-dark bg-white w-50 rounded-0 border-0">
+                        <div
+                          className="btn btn-dark p-3 text-dark bg-white w-50 rounded-0 border-0"
+                          data-dismiss="modal"
+                        >
                           <b>CANCEL</b>
                         </div>
                         <div
                           className="btn btn-dark p-3 w-50 rounded-0 border-0"
                           style={{ background: "rgb(255, 63, 108)" }}
+                          onClick={EditAddress}
                         >
                           <b>SAVE</b>
                         </div>
@@ -2047,3 +2438,4 @@ function Profile() {
 }
 
 export default Profile;
+//HUH

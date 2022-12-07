@@ -102,10 +102,11 @@ button:focus {
 }
 .dropdown-menu .row {
   width: 70vw;
+  padding-inline: 30px;
 }
 
 .dropdown-menu li {
-  padding: 5px 0px;
+  padding: 2px 0px;
   font-family: Roboto, Arial, sans-serif;
   font-size: 14px;
   color: "#282C3F" !important;
@@ -230,9 +231,6 @@ button:focus {
 input[type="radio"] {
   cursor: pointer;
 }
-#homeFilter {
-  display: none;
-}
 #footerFilter {
   display: none;
 }
@@ -289,9 +287,6 @@ input[type="radio"] {
   .content {
     overflow-y: scroll;
     height: 100vh;
-  }
-  #homeFilter {
-    display: block;
   }
   #footerFilter {
     display: block;
@@ -350,7 +345,9 @@ input[type="radio"] {
   color: #14cda8;
   font-weight: 500;
 }
-
+.css-1d3z3hw-MuiOutlinedInput-notchedOutline{
+  border-radius: 0 !important;
+}
 .overviewCards {
   height: 220px;
   transition: 0.5s;

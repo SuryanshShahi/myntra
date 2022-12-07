@@ -1,7 +1,7 @@
 {
   "files": {
-    "main.css": "/static/css/main.2ffba5b9.css",
-    "main.js": "/static/js/main.d143586b.js",
+    "main.css": "/static/css/main.598f3aaf.css",
+    "main.js": "/static/js/main.c88549c7.js",
     "static/media/spotlight.gif": "/static/media/spotlight.7d8544dc90064796e478.gif",
     "static/media/fontawesome-webfont.svg?v=4.7.0": "/static/media/fontawesome-webfont.c1e38fd9e0e74ba58f7a.svg",
     "static/media/fontawesome-webfont.eot": "/static/media/fontawesome-webfont.8b43027f47b20503057d.eot",
@@ -9,14 +9,16 @@
     "static/media/fontawesome-webfont.woff?v=4.7.0": "/static/media/fontawesome-webfont.f691f37e57f04c152e23.woff",
     "static/media/fontawesome-webfont.woff2?v=4.7.0": "/static/media/fontawesome-webfont.20fd1704ea223900efa9.woff2",
     "static/media/Donation.webp": "/static/media/Donation.7f4fa77146590d0ef987.webp",
-    "static/media/myntra.png": "/static/media/myntra.ada79cb286f0cbc84200.png",
+    "static/media/creditImg.png": "/static/media/creditImg.6373bd5a1f49457609bf.png",
+    "static/media/myntra.png": "/static/media/myntra.1914a69d8a69d1ff6497.png",
+    "static/media/mobile-verification.jpg": "/static/media/mobile-verification.3f6989b6429f37dea848.jpg",
     "static/media/loginSignUp.webp": "/static/media/loginSignUp.439ac0def447884c09b9.webp",
     "index.html": "/index.html",
-    "main.2ffba5b9.css.map": "/static/css/main.2ffba5b9.css.map",
-    "main.d143586b.js.map": "/static/js/main.d143586b.js.map"
+    "main.598f3aaf.css.map": "/static/css/main.598f3aaf.css.map",
+    "main.c88549c7.js.map": "/static/js/main.c88549c7.js.map"
   },
   "entrypoints": [
-    "static/css/main.2ffba5b9.css",
-    "static/js/main.d143586b.js"
+    "static/css/main.598f3aaf.css",
+    "static/js/main.c88549c7.js"
   ]
 }

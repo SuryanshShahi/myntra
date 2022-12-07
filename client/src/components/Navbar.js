@@ -5,6 +5,7 @@ import app from "./images/downloadApp.jpeg";
 import Accordion from "react-bootstrap/Accordion";
 import { search, sidebar, Deals } from "../Data/Data";
 import loginImg from "./images/loginSignUp.webp";
+import axios from "axios";
 
 function Navbar() {
   const [isactive, setActive] = useState(false);
@@ -12,6 +13,19 @@ function Navbar() {
   const [heading, setHeading] = useState("");
   const [searchTerm, setSearchTerm] = useState("");
   const [searchBar, setSearchBar] = useState(false);
+  const [userData, setUserData] = useState({
+    full_name: "",
+    mobile: "",
+  });
+  const getData = () => {
+    axios
+      .get("/profile")
+      .then((e) => {
+        setUserData(e.data.data);
+        console.log(e.data.data);
+      })
+      .catch((err) => console.log(err));
+  };
 
   const slideNav = () => {
     var x = document.getElementById("navbar");
@@ -28,6 +42,7 @@ function Navbar() {
   window.addEventListener("scroll", slideNav);
 
   useEffect(() => {
+    getData();
     const changeNav = () => {
       if (window.innerWidth >= 575) {
         setActive(false);
@@ -149,7 +164,7 @@ function Navbar() {
                             <li>Suits</li>
                             <li>Rain Jackets</li>
                           </ul>
-                          <div className="text-danger">
+                          <div className="text-danger pt-3">
                             <div style={{ fontWeight: "500" }}>
                               Indian & festive Wear
                             </div>
@@ -664,7 +679,7 @@ function Navbar() {
                             <li>Chair Pads & Covers</li>
                             <li>Sofa Covers</li>
                           </ul>
-                          <div className="" style={{ color: "#e7bc00" }}>
+                          <div className="pt-3" style={{ color: "#e7bc00" }}>
                             <div style={{ fontWeight: "500" }}>Flooring</div>
                           </div>
                           <ul className="list-unstyled">
@@ -694,7 +709,7 @@ function Navbar() {
                             <li>Bathroom Accessories</li>
                             <li>Shower Curtains</li>
                           </ul>
-                          <div className="" style={{ color: "#e7bc00" }}>
+                          <div className="pt-3" style={{ color: "#e7bc00" }}>
                             <div style={{ fontWeight: "500" }}>
                               Lamps & Lighting
                             </div>
@@ -1085,44 +1100,47 @@ function Navbar() {
                           className="list-unstyled m-0"
                           style={{ fontSize: "14px", color: "#3e4152" }}
                         >
-                          <NavLink
-                            to="/profile"
-                            id="setupProfile"
-                            style={{ display: "none" }}
-                            className="text-decoration-none"
-                          >
-                            <div style={{ ottom: "1px solid #8080804d" }}>
-                              <div
-                                className="text-dark"
-                                style={{ fontWeight: "600" }}
-                              >
-                                Hello User
-                              </div>
-                              <div
-                                className="mb-1"
-                                style={{ color: "#3e4152" }}
-                              >
-                                73xxxxxxxx
-                              </div>
-                            </div>
-                          </NavLink>
-                          <div id="toLogin" style={{ color: "black" }}>
-                            <div style={{ fontWeight: "600" }}>Welcome</div>
-                            <div>to access account & manage orders</div>
-                            <NavLink to="/login">
-                              <div
-                                className="btn btn-danger mt-3 mb-2 bg-transparent loginBtn"
-                                style={{
-                                  color: "#ff3f6c",
-                                  transition: "0.5s",
-                                  fontWeight: "600",
-                                  border: "1px solid #eaeaec",
-                                }}
-                              >
-                                LOGIN / SIGNUP
+                          {userData ? (
+                            <NavLink
+                              to="/profile"
+                              id="setupProfile"
+                              // style={{ display: "none" }}
+                              className="text-decoration-none"
+                            >
+                              <div style={{ bottom: "1px solid #8080804d" }}>
+                                <div
+                                  className="text-dark"
+                                  style={{ fontWeight: "600" }}
+                                >
+                                  Hello! {userData.full_name}
+                                </div>
+                                <div
+                                  className="mb-1"
+                                  style={{ color: "#3e4152" }}
+                                >
+                                  {userData.mobile}
+                                </div>
                               </div>
                             </NavLink>
-                          </div>
+                          ) : (
+                            <div id="toLogin" style={{ color: "black" }}>
+                              <div style={{ fontWeight: "600" }}>Welcome</div>
+                              <div>to access account & manage orders</div>
+                              <NavLink to="/login">
+                                <div
+                                  className="btn btn-danger mt-3 mb-2 bg-transparent loginBtn"
+                                  style={{
+                                    color: "#ff3f6c",
+                                    transition: "0.5s",
+                                    fontWeight: "600",
+                                    border: "1px solid #eaeaec",
+                                  }}
+                                >
+                                  LOGIN / SIGNUP
+                                </div>
+                              </NavLink>
+                            </div>
+                          )}
                           <hr style={{ color: "#A9ABB3" }}></hr>
                           <li style={{ marginTop: "12px" }}>Orders</li>
                           <li>Whishlist</li>
@@ -1476,7 +1494,7 @@ function Navbar() {
                   style={{
                     background: "rgb(0,0,0,0.6)",
                     borderRadius: "50px",
-                    border:"2px solid black",
+                    border: "2px solid black",
                     right: 0,
                     fontSize: "24px",
                     width: "30px",

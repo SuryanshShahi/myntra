@@ -12,19 +12,19 @@ function SignUp() {
     document.body.style.background = "rgb(255 192 203 / 30%)";
     // document.getElementById("loginProfileIcon").style.display = "none";
   }, []);
-  // const setupAcc = () => {
-  //   PostData();
-  //   document.getElementById("setupProfile").style.display = "block";
-  //   document.getElementById("toLogin").style.display = "none";
-  //   history.push("/");
-  // };
+  const setupAcc = () => {
+    document.getElementById("setupProfile").style.display = "block";
+    document.getElementById("toLogin").style.display = "none";
+    history.push("/");
+  };
 
   const [user, setUser] = useState({
     name: "",
     email: "",
-    // number: "",
     number1: "",
     password: "",
+    hintName: "",
+    gender:"",
   });
 
   let name, value;
@@ -38,7 +38,9 @@ function SignUp() {
 
   const PostData = async (e) => {
     e.preventDefault();
-    const { name, email, number1, password } = user;
+    const { name, email, number1, password, hintName, gender } = user;
+    console.log(user);
+    console.log(gender);
     const res = await fetch("/signup", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
@@ -47,6 +49,8 @@ function SignUp() {
         email,
         number1,
         password,
+        hintName,
+        gender,
         no,
       }),
     });
@@ -56,6 +60,7 @@ function SignUp() {
         timer: 2200,
         buttons: false,
       });
+      setupAcc();
       console.log("SignUp Successful");
     } else {
       Swal.fire("", "Invalid Credentials!", "error", {
@@ -174,14 +179,22 @@ function SignUp() {
                 {" "}
                 <label>Select Gender:</label>
                 <div className="ml-auto d-flex">
-                  <input type="radio" name="btn" className="form-check mr-2" />
-                  <label>Female</label>
                   <input
+                    name="gender"
                     type="radio"
-                    name="btn"
-                    className="form-check mr-2 ml-4"
+                    value="male"
+                    onChange={handleInputs}
+                    className="form-check mr-2"
                   />
                   <label>Male</label>
+                  <input
+                    name="gender"
+                    type="radio"
+                    value="female"
+                    onChange={handleInputs}
+                    className="form-check mr-2 ml-4"
+                  />
+                  <label>Female</label>
                 </div>
               </div>
               <div className="align-items-center d-flex">
@@ -200,9 +213,9 @@ function SignUp() {
                   type="tel"
                   placeholder="Alternate Mobile Number"
                   pattern="[0-9]{10}"
-                  name="number"
-                  // value={user.number}
-                  // onChange={handleInputs}
+                  name="number1"
+                  value={user.number1}
+                  onChange={handleInputs}
                   style={{ height: "40px", paddingLeft: "54px" }}
                 />
               </div>
@@ -214,10 +227,10 @@ function SignUp() {
               <input
                 className="form-control shadow-none mt-3 rounded-0"
                 type="text"
-                name="number1"
-                value={user.number1}
+                name="hintName"
+                value={user.hintName}
                 onChange={handleInputs}
-                placeholder="Hint name (Alternate number)"
+                placeholder="Hint name"
                 style={{ height: "40px" }}
               />
               <label

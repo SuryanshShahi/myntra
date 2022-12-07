@@ -39,7 +39,7 @@ function Myntra() {
       </div>
       <div className="pl-3 pb-lg-0 pb-3 pt-2">
         <div>
-          Home {params.pa}
+          Home
           <span style={{ fontWeight: "700", fontSize: "14px", color: "black" }}>
             &nbsp;/&nbsp;Myntra
           </span>
@@ -348,55 +348,6 @@ function Myntra() {
                 <input type="checkbox" name="radio" />
                 <label className="pl-2">90% and above</label>
               </div>
-            </div>
-          </div>
-        </div>
-
-        <div id="homeFilter" className="pt-3 pt-md-4">
-          <div
-            className="nav nav-tabs justify-content-center d-flex"
-            style={{ boxShadow: "0px 5px 7px -3px #80808075" }}
-          >
-            <div
-              className="btn btn-danger mb-lg-0 mb-2 active mx-2 filterbtn"
-              id="click"
-              type="button"
-              data-toggle="tab"
-              onClick={() => setData(items)}
-            >
-              All
-            </div>
-            <div
-              className="btn btn-danger mb-lg-0 mb-2 mx-2 filterbtn"
-              type="button"
-              data-toggle="tab"
-              onClick={() => filterData("men's clothing")}
-            >
-              Men's Clothing
-            </div>
-            <div
-              className="btn btn-danger mb-lg-0 mb-2 mx-2 filterbtn"
-              type="button"
-              data-toggle="tab"
-              onClick={() => filterData("women's clothing")}
-            >
-              Women's Clothing
-            </div>
-            <div
-              className="btn btn-danger mb-lg-0 mb-2 mx-2 filterbtn"
-              type="button"
-              data-toggle="tab"
-              onClick={() => filterData("jewelery")}
-            >
-              Jwellery
-            </div>
-            <div
-              className="btn btn-danger mb-lg-0 mb-2 mx-2 filterbtn"
-              type="button"
-              data-toggle="tab"
-              onClick={() => filterData("electronics")}
-            >
-              Electronics
             </div>
           </div>
         </div>
