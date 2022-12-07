@@ -26,6 +26,8 @@ function Profile() {
   }, []);
 
   const [isActive, setActive] = useState(false);
+  const [userAddress, setUserAddress] = useState([]);
+  const [userData, setUserData] = useState([]);
 
   const setAddress = () => {
     var a = document.getElementById("default");
@@ -40,7 +42,6 @@ function Profile() {
   };
 
   let name, value;
-
   const EditInputs = (e) => {
     console.log(e);
     name = e.target.name;
@@ -65,7 +66,6 @@ function Profile() {
     const birth = dob.split("-"); //[dd, mm, yyyy]
     const birth_date = `${birth[2]}-${birth[1]}-${birth[0]}`;
     console.log(userData);
-    // console.log(birthDate);
     const res = await fetch("/edit-profile", {
       method: "PATCH",
       headers: { "Content-Type": "application/json" },
@@ -97,7 +97,6 @@ function Profile() {
     }
   };
 
-  const [userAddress, setUserAddress] = useState([]);
   const UpdateAddress = (e) => {
     console.log(e);
     name = e.target.name;
@@ -105,6 +104,7 @@ function Profile() {
 
     setUserAddress({ ...userAddress, [name]: value });
   };
+
   const PostAddress = async (e) => {
     e.preventDefault();
     const {
@@ -147,6 +147,7 @@ function Profile() {
       console.log("Invalid Credentials");
     }
   };
+
   const EditAddress = async (e) => {
     e.preventDefault();
     const {
@@ -190,7 +191,6 @@ function Profile() {
     }
   };
 
-  const [userData, setUserData] = useState([]);
   const getData = () => {
     console.log(userData);
     axios
@@ -527,6 +527,7 @@ function Profile() {
                   </div>
                 </div>
               </div>
+
               <div id="orders" className="tab-pane fade">
                 <div
                   className="d-flex p-3 align-items-center"
@@ -659,6 +660,7 @@ function Profile() {
                   </div>
                 </div>
               </div>
+
               <div id="coupons" className="tab-pane fade">
                 <div
                   className="mt-3"
@@ -708,6 +710,7 @@ function Profile() {
                   </div>
                 </div>
               </div>
+
               <div id="credit" className="tab-pane fade">
                 <div>
                   <img
@@ -851,6 +854,7 @@ function Profile() {
                   </div>
                 </div>
               </div>
+
               <div id="myncash" className="tab-pane fade">
                 <div
                   className="justify-content-center d-flex"
@@ -1778,7 +1782,7 @@ function Profile() {
                       fontWeight: "600",
                       height: "fit-content",
                     }}
-                    data-target="#mymodal"
+                    data-target="#newAddress"
                     data-toggle="modal"
                   >
                     + ADD NEW ADDRESS
@@ -1807,7 +1811,7 @@ function Profile() {
                     </div>
                   </div>
                   <div
-                    className="p-3 py-2"
+                    className="p-3 py-2 mt-2"
                     style={{
                       color: "#696E79",
                       fontSize: "14px",
@@ -1823,7 +1827,7 @@ function Profile() {
                     <div className="pt-3">{userAddress.state}</div>
                   </div>
                   <div id="default">
-                    <div className="pl-3" style={{ color: "#696E79" }}>
+                    <div className="pl-3 mt-3" style={{ color: "#696E79" }}>
                       Mobile: {userAddress.mobile}
                     </div>
                     <hr></hr>
@@ -1871,89 +1875,329 @@ function Profile() {
                 >
                   OTHER ADDRESSES
                 </div>
-                <div
-                  className="py-3 mt-3"
-                  style={{ boxShadow: "0 1px 2px 0 rgb(0 0 0 / 25%)" }}
-                >
-                  <div className="d-flex px-3">
-                    <div style={{ fontSize: "16px", fontWeight: "600" }}>
-                      UserName
-                    </div>
-                    <div
-                      className="rounded-pill btn btn-dark border-0 text-dark p-0 px-2 ml-auto"
-                      style={{
-                        fontSize: "14px",
-                        fontWeight: "700",
-                        background: "#F5F5F6",
-                      }}
-                    >
-                      HOME
-                    </div>
-                  </div>
-                  <div
-                    className="p-3 py-2"
-                    style={{ color: "#696E79" }}
-                    onClick={setAddress}
-                  >
-                    aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
-                    <br></br>
-                    aaaaaaaaaaaaaaaaaaaaaaaaaaaa<br></br>aaaaaaaaaaaaaaaaaaaaa
-                    <br></br>aaaaaaaa
-                  </div>
-                  <div id="other" style={{ display: "none" }}>
-                    <div className="pl-3" style={{ color: "#696E79" }}>
-                      Mobile: xxxxxxxxxx
-                    </div>
-                    <div
-                      className="pt-2 pl-3"
-                      style={{
-                        fontSize: "12px",
-                        color: "#14cda8",
-                        fontWeight: "700",
-                        cursor: "pointer",
-                      }}
-                    >
-                      MAKE THIS DEFAULT
-                    </div>
-                    <hr></hr>
-                    <div className="row">
+
+                <div>
+                  {userData.slice(0, 1).map((e) => {
+                    return (
                       <div
-                        className="text-center col-6"
-                        style={{
-                          borderRight: "1px solid #8080804d",
-                          cursor: "pointer",
-                        }}
-                        data-target="#mymodal"
-                        data-toggle="modal"
+                        className="py-3 mt-3"
+                        style={{ boxShadow: "0 1px 2px 0 rgb(0 0 0 / 25%)" }}
                       >
+                        <div className="d-flex px-3">
+                          <div style={{ fontSize: "16px", fontWeight: "600" }}>
+                            {e.full_name}
+                          </div>
+                          <div
+                            className="rounded-pill btn btn-dark border-0 text-dark p-0 px-2 ml-auto"
+                            style={{
+                              fontSize: "14px",
+                              fontWeight: "700",
+                              background: "#F5F5F6",
+                            }}
+                          >
+                            {e.type_of_address}
+                          </div>
+                        </div>
                         <div
+                          className="p-3 py-2 mt-2"
                           style={{
-                            color: "#526cd0",
-                            fontWeight: "500",
-                            fontSize: "16px",
+                            color: "#696E79",
+                            lineHeight: "0",
+                            fontSize: "14px",
+                          }}
+                          onClick={setAddress}
+                        >
+                          <div>{e.address},</div>
+                          <div className="pt-3">{e.locality}</div>
+                          <div className="pt-3">
+                            {e.city} - {e.pincode}
+                          </div>
+                          <div className="pt-3">{e.state}</div>
+                        </div>
+                        <div id="other" style={{ display: "none" }}>
+                          <div
+                            className="pl-3 mt-3"
+                            style={{ color: "#696E79", fontSize: "14px" }}
+                          >
+                            Mobile: {e.mobile}
+                          </div>
+                          <div
+                            className="pt-2 pl-3"
+                            style={{
+                              fontSize: "12px",
+                              color: "#14cda8",
+                              fontWeight: "700",
+                              cursor: "pointer",
+                            }}
+                          >
+                            MAKE THIS DEFAULT
+                          </div>
+                          <hr></hr>
+                          <div className="row">
+                            <div
+                              className="text-center col-6"
+                              style={{
+                                borderRight: "1px solid #8080804d",
+                                cursor: "pointer",
+                              }}
+                              data-target="#mymodal"
+                              data-toggle="modal"
+                            >
+                              <div
+                                style={{
+                                  color: "#526cd0",
+                                  fontWeight: "500",
+                                  fontSize: "16px",
+                                }}
+                              >
+                                EDIT
+                              </div>
+                            </div>
+                            <div
+                              className="text-center col-6"
+                              style={{ cursor: "pointer" }}
+                            >
+                              <div
+                                style={{
+                                  color: "#526cd0",
+                                  fontWeight: "500",
+                                  fontSize: "16px",
+                                }}
+                              >
+                                REMOVE
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    );
+                  })}
+                </div>
+
+                <div className="modal fade" id="newAddress">
+                  <div className="modal-dialog modal-md">
+                    <div
+                      className="modal-content"
+                      style={{ background: "#eee" }}
+                    >
+                      <div
+                        className="p-3 bg-white position-sticky"
+                        style={{
+                          fontWeight: "500",
+                          top: "0",
+                          boxShadow: "rgb(0 0 0 / 25%) 0px 1px 2px 0px",
+                        }}
+                      >
+                        Add New ADDRESS
+                      </div>
+                      <div style={{ height: "70vh", overflowY: "scroll" }}>
+                        <div
+                          className="bg-white p-4 mt-2"
+                          style={{
+                            boxShadow: "rgb(0 0 0 / 25%) 0px 1px 2px 0px",
                           }}
                         >
-                          EDIT
+                          <Box
+                            component="form"
+                            sx={{
+                              "& > :not(style)": { width: "100%" },
+                            }}
+                          >
+                            <div className="pb-4">
+                              <TextField
+                                required
+                                name="full_name"
+                                label="Name"
+                                value={userAddress.full_name}
+                                onChange={UpdateAddress}
+                                type={"text"}
+                                variant="standard"
+                                sx={{
+                                  width: "100%",
+                                  color: "white",
+                                  fontSize: "14px",
+                                }}
+                                color="warning"
+                              />
+                              <TextField
+                                className="mt-5"
+                                required
+                                name="mobile"
+                                label="Mobile"
+                                value={userAddress.mobile}
+                                onChange={UpdateAddress}
+                                type={"text"}
+                                variant="standard"
+                                sx={{
+                                  width: "100%",
+                                  color: "white",
+                                  fontSize: "14px",
+                                }}
+                                color="warning"
+                              />
+                            </div>
+                          </Box>
+                        </div>
+                        <div
+                          className="bg-white p-4 mt-2"
+                          style={{
+                            boxShadow: "rgb(0 0 0 / 25%) 0px 1px 2px 0px",
+                          }}
+                        >
+                          <Box
+                            component="form"
+                            sx={{
+                              "& > :not(style)": { width: "100%" },
+                            }}
+                          >
+                            <div className="pb-4">
+                              <div className="d-flex">
+                                <TextField
+                                  className="w-50 mr-5"
+                                  required
+                                  name="pincode"
+                                  label="Pincode"
+                                  type="tel"
+                                  value={userAddress.pincode}
+                                  onChange={UpdateAddress}
+                                  variant="standard"
+                                  sx={{
+                                    width: "100%",
+                                    color: "white",
+                                    fontSize: "14px",
+                                  }}
+                                  color="warning"
+                                />
+                                <TextField
+                                  className="w-50 ml-5 ml-auto"
+                                  required
+                                  name="state"
+                                  label="State"
+                                  type={"text"}
+                                  value={userAddress.state}
+                                  onChange={UpdateAddress}
+                                  variant="standard"
+                                  sx={{
+                                    width: "100%",
+                                    color: "white",
+                                    fontSize: "14px",
+                                  }}
+                                  color="warning"
+                                />
+                              </div>
+                              <TextField
+                                className="mt-5"
+                                required
+                                name="address"
+                                label="Address (House No, Building, Street, Area)"
+                                type={"text"}
+                                value={userAddress.address}
+                                onChange={UpdateAddress}
+                                variant="standard"
+                                sx={{
+                                  width: "100%",
+                                  color: "white",
+                                  fontSize: "14px",
+                                }}
+                                color="warning"
+                              />
+                              <TextField
+                                className="mt-5"
+                                required
+                                name="locality"
+                                label="Locality/ Town"
+                                type={"text"}
+                                value={userAddress.locality}
+                                onChange={UpdateAddress}
+                                variant="standard"
+                                sx={{
+                                  width: "100%",
+                                  color: "white",
+                                  fontSize: "14px",
+                                }}
+                                color="warning"
+                              />
+                              <TextField
+                                className="mt-5"
+                                required
+                                name="city"
+                                label="City/ District"
+                                type={"text"}
+                                value={userAddress.city}
+                                onChange={UpdateAddress}
+                                variant="standard"
+                                sx={{
+                                  width: "100%",
+                                  color: "white",
+                                  fontSize: "14px",
+                                }}
+                                color="warning"
+                              />
+                            </div>
+                          </Box>
+                        </div>
+
+                        <div
+                          className="bg-white p-4 my-2"
+                          style={{
+                            boxShadow: "rgb(0 0 0 / 25%) 0px 1px 2px 0px",
+                          }}
+                        >
+                          <div>Type of Address *</div>
+                          <div className="d-flex mt-3">
+                            <input
+                              type="radio"
+                              name="typeOfAddress"
+                              value="home"
+                              onChange={UpdateAddress}
+                              className="form-check mr-2"
+                              style={{ width: "20px" }}
+                            />
+                            Home
+                            <input
+                              type="radio"
+                              name="typeOfAddress"
+                              value="home"
+                              onChange={UpdateAddress}
+                              className="form-check mr-2 ml-5"
+                              style={{ width: "20px" }}
+                            />
+                            Office
+                          </div>
+                          <hr></hr>
+                          <div className="d-flex align-items-center">
+                            <input
+                              type="checkbox"
+                              className="form-check mr-2"
+                              style={{ width: "18px" }}
+                            />
+                            Make this as my default address
+                          </div>
                         </div>
                       </div>
                       <div
-                        className="text-center col-6"
-                        style={{ cursor: "pointer" }}
+                        className="d-flex"
+                        style={{
+                          boxShadow: "rgb(0 0 0 / 25%) 0px 1px 2px 0px",
+                        }}
                       >
                         <div
-                          style={{
-                            color: "#526cd0",
-                            fontWeight: "500",
-                            fontSize: "16px",
-                          }}
+                          className="btn btn-dark p-3 text-dark bg-white w-50 rounded-0 border-0"
+                          data-dismiss="modal"
                         >
-                          REMOVE
+                          <b>CANCEL</b>
+                        </div>
+                        <div
+                          className="btn btn-dark p-3 w-50 rounded-0 border-0"
+                          style={{ background: "rgb(255, 63, 108)" }}
+                          onClick={PostAddress}
+                        >
+                          <b>SAVE</b>
                         </div>
                       </div>
                     </div>
                   </div>
                 </div>
-
                 <div className="modal fade" id="mymodal">
                   <div className="modal-dialog modal-md">
                     <div
