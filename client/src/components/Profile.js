@@ -87,6 +87,7 @@ function Profile() {
         timer: 2200,
         buttons: false,
       });
+      setActive(false);
       console.log("SignUp Successful");
     } else {
       Swal.fire("", "Invalid Credentials!", "error", {
@@ -1827,7 +1828,7 @@ function Profile() {
                     <div className="pt-3">{userAddress.state}</div>
                   </div>
                   <div id="default">
-                    <div className="pl-3 mt-3" style={{ color: "#696E79" }}>
+                    <div className="pl-3 mt-3" style={{ color: "#696E79", fontSize:"14px" }}>
                       Mobile: {userAddress.mobile}
                     </div>
                     <hr></hr>
@@ -1877,15 +1878,14 @@ function Profile() {
                 </div>
 
                 <div>
-                  {userData.slice(0, 1).map((e) => {
-                    return (
+               
                       <div
                         className="py-3 mt-3"
                         style={{ boxShadow: "0 1px 2px 0 rgb(0 0 0 / 25%)" }}
                       >
                         <div className="d-flex px-3">
                           <div style={{ fontSize: "16px", fontWeight: "600" }}>
-                            {e.full_name}
+                            {userAddress.full_name}
                           </div>
                           <div
                             className="rounded-pill btn btn-dark border-0 text-dark p-0 px-2 ml-auto"
@@ -1895,7 +1895,7 @@ function Profile() {
                               background: "#F5F5F6",
                             }}
                           >
-                            {e.type_of_address}
+                            {userAddress.type_of_address}
                           </div>
                         </div>
                         <div
@@ -1907,19 +1907,19 @@ function Profile() {
                           }}
                           onClick={setAddress}
                         >
-                          <div>{e.address},</div>
-                          <div className="pt-3">{e.locality}</div>
+                          <div>{userAddress.address},</div>
+                          <div className="pt-3">{userAddress.locality}</div>
                           <div className="pt-3">
-                            {e.city} - {e.pincode}
+                            {userAddress.city} - {userAddress.pincode}
                           </div>
-                          <div className="pt-3">{e.state}</div>
+                          <div className="pt-3">{userAddress.state}</div>
                         </div>
                         <div id="other" style={{ display: "none" }}>
                           <div
                             className="pl-3 mt-3"
                             style={{ color: "#696E79", fontSize: "14px" }}
                           >
-                            Mobile: {e.mobile}
+                            Mobile: {userAddress.mobile}
                           </div>
                           <div
                             className="pt-2 pl-3"
@@ -1970,8 +1970,6 @@ function Profile() {
                           </div>
                         </div>
                       </div>
-                    );
-                  })}
                 </div>
 
                 <div className="modal fade" id="newAddress">
@@ -1988,7 +1986,7 @@ function Profile() {
                           boxShadow: "rgb(0 0 0 / 25%) 0px 1px 2px 0px",
                         }}
                       >
-                        Add New ADDRESS
+                        ADD NEW ADDRESS
                       </div>
                       <div style={{ height: "70vh", overflowY: "scroll" }}>
                         <div
@@ -2191,6 +2189,7 @@ function Profile() {
                           className="btn btn-dark p-3 w-50 rounded-0 border-0"
                           style={{ background: "rgb(255, 63, 108)" }}
                           onClick={PostAddress}
+                          data-dismiss="modal"
                         >
                           <b>SAVE</b>
                         </div>
@@ -2370,6 +2369,7 @@ function Profile() {
                           <div>Type of Address *</div>
                           <div className="d-flex mt-3">
                             <input
+                            required
                               type="radio"
                               name="typeOfAddress"
                               value="home"
@@ -2379,9 +2379,10 @@ function Profile() {
                             />
                             Home
                             <input
+                            required
                               type="radio"
                               name="typeOfAddress"
-                              value="home"
+                              value="office"
                               onChange={UpdateAddress}
                               className="form-check mr-2 ml-5"
                               style={{ width: "20px" }}
@@ -2415,6 +2416,7 @@ function Profile() {
                           className="btn btn-dark p-3 w-50 rounded-0 border-0"
                           style={{ background: "rgb(255, 63, 108)" }}
                           onClick={EditAddress}
+                          data-dismiss="modal"
                         >
                           <b>SAVE</b>
                         </div>

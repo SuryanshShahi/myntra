@@ -1100,46 +1100,44 @@ function Navbar() {
                           className="list-unstyled m-0"
                           style={{ fontSize: "14px", color: "#3e4152" }}
                         >
-                          {userData ? (
+                          {userData.full_name !== "null" ? (
                             <NavLink
-                              to="/profile"
-                              id="setupProfile"
-                              // style={{ display: "none" }}
-                              className="text-decoration-none"
-                            >
-                              <div style={{ bottom: "1px solid #8080804d" }}>
-                                <div
-                                  className="text-dark"
-                                  style={{ fontWeight: "600" }}
-                                >
-                                  Hello! {userData.full_name}
-                                </div>
-                                <div
-                                  className="mb-1"
-                                  style={{ color: "#3e4152" }}
-                                >
-                                  {userData.mobile}
-                                </div>
+                            to="/profile"
+                            className="text-decoration-none"
+                          >
+                            <div style={{ bottom: "1px solid #8080804d" }}>
+                              <div
+                                className="text-dark"
+                                style={{ fontWeight: "600" }}
+                              >
+                                Hello! {userData.full_name}
+                              </div>
+                              <div
+                                className="mb-1"
+                                style={{ color: "#3e4152" }}
+                              >
+                                {userData.mobile}
+                              </div>
+                            </div>
+                          </NavLink>
+                          ) : (
+                            <div style={{ color: "black" }}>
+                            <div style={{ fontWeight: "600" }}>Welcome</div>
+                            <div>to access account & manage orders</div>
+                            <NavLink to="/login">
+                              <div
+                                className="btn btn-danger mt-3 mb-2 bg-transparent loginBtn"
+                                style={{
+                                  color: "#ff3f6c",
+                                  transition: "0.5s",
+                                  fontWeight: "600",
+                                  border: "1px solid #eaeaec",
+                                }}
+                              >
+                                LOGIN / SIGNUP
                               </div>
                             </NavLink>
-                          ) : (
-                            <div id="toLogin" style={{ color: "black" }}>
-                              <div style={{ fontWeight: "600" }}>Welcome</div>
-                              <div>to access account & manage orders</div>
-                              <NavLink to="/login">
-                                <div
-                                  className="btn btn-danger mt-3 mb-2 bg-transparent loginBtn"
-                                  style={{
-                                    color: "#ff3f6c",
-                                    transition: "0.5s",
-                                    fontWeight: "600",
-                                    border: "1px solid #eaeaec",
-                                  }}
-                                >
-                                  LOGIN / SIGNUP
-                                </div>
-                              </NavLink>
-                            </div>
+                          </div>
                           )}
                           <hr style={{ color: "#A9ABB3" }}></hr>
                           <li style={{ marginTop: "12px" }}>Orders</li>

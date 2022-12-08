@@ -12,11 +12,7 @@ function SignUp() {
     document.body.style.background = "rgb(255 192 203 / 30%)";
     // document.getElementById("loginProfileIcon").style.display = "none";
   }, []);
-  const setupAcc = () => {
-    document.getElementById("setupProfile").style.display = "block";
-    document.getElementById("toLogin").style.display = "none";
-    history.push("/");
-  };
+ 
 
   const [user, setUser] = useState({
     name: "",
@@ -60,7 +56,7 @@ function SignUp() {
         timer: 2200,
         buttons: false,
       });
-      setupAcc();
+      history.push("/");
       console.log("SignUp Successful");
     } else {
       Swal.fire("", "Invalid Credentials!", "error", {

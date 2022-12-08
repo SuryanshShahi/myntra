@@ -24,7 +24,7 @@ function Men() {
       filterData("men's clothing");
       //   document.getElementById("click").click();
     }, 100);
-  }, []);
+  }, []);   
 
   const filterData = (categ) => {
     const updatedItems = items.filter((e) => {
