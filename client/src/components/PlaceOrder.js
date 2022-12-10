@@ -59,17 +59,18 @@ function PlaceOrder() {
     web3api.web3 && getAcc();
   }, [web3api.web3]);
 
+  var price1 = price * 0.0000096;
+
   const transferFund = async () => {
     const { contract, web3 } = web3api;
-    var price1 = price * 0.0000096;
     await contract.transfer({
       from: account,
       value: web3.utils.toWei(`${price1}`, "ether"),
     });
     Swal.fire("", "Order Placed", "success", {
-        timer: 2200,
-        buttons: false,
-      });
+      timer: 2200,
+      buttons: false,
+    });
     reloadPage();
   };
 
@@ -162,7 +163,7 @@ function PlaceOrder() {
         </div>
       </nav>
       <div className="text-center mt-5" style={{ fontWeight: "500" }}>
-        Amount to pe paid : ₹ {price}
+        Amount to pe paid : ₹ {price} &nbsp; or &nbsp; {price1} ETH
       </div>
       <div className="text-center my-3 mb-5" style={{ fontWeight: "500" }}>
         Balance : ₹ {balance * 104327.87}

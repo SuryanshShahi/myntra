@@ -170,7 +170,7 @@ function Bag() {
                       with PayZapp. TCA
                     </li>
                     <div
-                      className="pl-4 py-2"
+                      className="pl-3 py-2"
                       style={{
                         cursor: "pointer",
                         fontWeight: "500",
