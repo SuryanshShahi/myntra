@@ -1,4 +1,5 @@
 node_modules
-.env
-database.json
+backend/node_modules
+backend/.env
+backend/database.json
 client/node_modules

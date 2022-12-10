@@ -3,6 +3,9 @@ import { NavLink, useParams } from "react-router-dom";
 import logo from "./images/myntra.png";
 import Skeleton from "react-loading-skeleton";
 import "react-loading-skeleton/dist/skeleton.css";
+import detectEthereumProvider from "@metamask/detect-provider";
+import Web3 from "web3";
+import { loadContract } from "../utils/load-contract";
 
 function Bag() {
   window.scroll(0, 0);
@@ -16,17 +19,62 @@ function Bag() {
     setLoading(false);
   };
 
-//   const getData = () => {
-//     axios
-//       .get(`https://fakestoreapi.com/products/${id}/`)
-//       .then((res) => {
-//         setItems(res.data);
-//         setLoading(false);
-//       })
-//       .catch((err) => {
-//         console.log(err);
-//       });
-//   };
+  const [web3api, setweb3api] = useState({
+    provider: null,
+    web3: null,
+    contract: null,
+  });
+  const [account, setAccount] = useState(null);
+  const [balance, setBalance] = useState(null);
+  const [reload, setReload] = useState(false);
+
+  const reloadPage = () => setReload(!reload);
+  useEffect(() => {
+    const loadBalance = async () => {
+      const { contract, web3 } = web3api;
+      const balance = await web3.eth.getBalance(contract.address);
+      setBalance(web3.utils.fromWei(balance, "ether"));
+    };
+    web3api.contract && loadBalance();
+  }, [web3api, reload]);
+
+  useEffect(() => {
+    const loadProviders = async () => {
+      const provider = await detectEthereumProvider();
+      const contract = await loadContract("Payment", provider);
+
+      if (provider) {
+        provider.request({ method: "eth_requestAccounts" });
+        setweb3api({
+          web3: new Web3(provider),
+          provider,
+          contract,
+        });
+      } else {
+        console.error("Please install Metamask");
+      }
+    };
+    loadProviders();
+  }, []);
+  console.log(web3api.web3);
+
+  useEffect(() => {
+    const getAcc = async () => {
+      const accounts = await web3api.web3.eth.getAccounts();
+      setAccount(accounts[0]);
+    };
+    web3api.web3 && getAcc();
+  }, [web3api.web3]);
+
+  const transferFund = async () => {
+    const { contract, web3 } = web3api;
+    var price1 = items.price * 0.0000096;
+    await contract.transfer({
+      from: account,
+      value: web3.utils.toWei(`${price1}`, "ether"),
+    });
+    reloadPage();
+  };
 
   useEffect(() => {
     getData();
@@ -35,7 +83,9 @@ function Bag() {
   }, []);
   return (
     <section id="bag">
-    <div className="backdrop" id="backdrop">.</div>
+      <div className="backdrop" id="backdrop">
+        .
+      </div>
       <nav
         className="navbar navbar-expand-lg bg-white p-0 m-0 px-lg-5 px-md-5"
         style={{ borderBottom: "1px solid #d4d5d9" }}
@@ -97,29 +147,30 @@ function Bag() {
         </div>
       </nav>
 
-      <div className="container">
+      <div className="container" style={{ maxWidth: "1000px" }}>
         <div className="row">
           <div
-            className="col-lg-8 col-12 mt-5 pr-4 address"
+            className="col-lg-8 col-12 pr-4 address"
             style={{ borderRight: "1px solid #d4d5d9" }}
           >
             <div
-              className="d-flex p-3 rounded mb-2"
-              style={{ border: "1px solid #d4d5d9" }}
+              className="d-flex rounded mb-2 mt-5"
+              style={{ border: "1px solid #d4d5d9", padding: "16px" }}
             >
-              <div>
+              <div style={{ fontSize: "12px" }}>
                 Deliver to: <b>xxxxxxxxxxxx, 123456</b>
                 <br></br> Lorem Ipsum is simply dummy text of the printing and
                 typesetting industry...
               </div>
               <div className="ml-auto">
                 <div
-                  className="text-danger px-3 mx-2 mt-1 align-items-center rounded d-flex justify-content-center"
+                  className="px-3 ml-2 rounded-0 mt-1 align-items-center rounded d-flex justify-content-center"
                   style={{
                     fontWeight: "500",
-                    border: "1px solid #dc3545",
+                    border: "1px solid rgb(255, 63, 108)",
                     fontSize: "14px",
                     height: "40px",
+                    color: "rgb(255, 63, 108)",
                   }}
                 >
                   CHANGE ADDRESS
@@ -128,27 +179,32 @@ function Bag() {
             </div>
 
             <div
-              className="d-flex p-3 rounded"
-              style={{ border: "1px solid #d4d5d9" }}
+              className="d-flex rounded"
+              style={{ border: "1px solid #d4d5d9", padding: "16px" }}
             >
               <div>
                 <span className="fa fa-certificate fa-lg pr-2"></span>
                 <span style={{ fontWeight: "500" }}>Available Offers</span>
-                <div className="py-2 pl-2">
+                <div className="py-2 pl-2" style={{ fontSize: "12px" }}>
                   <li>
                     10% Instant Discount on SBI Credit Card on a min spend of Rs
                     3,000. TCA
                   </li>
                   <div
-                    className="text-danger pl-4 py-2"
+                    className="pl-3 py-2"
                     id="more"
-                    style={{ cursor: "pointer", fontWeight: "500" }}
+                    style={{
+                      cursor: "pointer",
+                      fontWeight: "500",
+                      fontSize: "14px",
+                      color: "rgb(255, 63, 108)",
+                    }}
                     onClick={() => {
                       document.getElementById("less").style.display = "block";
                       document.getElementById("more").style.display = "none";
                     }}
                   >
-                    Show More
+                    Show More <span className="fa fa-angle-down fa-lg"></span>
                   </div>
                   <div id="less" style={{ display: "none" }}>
                     <li>
@@ -187,8 +243,13 @@ function Bag() {
             </div>
 
             <div className="mx-lg-3 mx-md-3 my-2">
-              <div className="d-flex py-4">
-                <input type="checkbox" className="form-check" checked />
+              <div className="d-flex py-3">
+                <input
+                  type="checkbox"
+                  className="form-check"
+                  style={{ width: "16px" }}
+                  checked
+                />
                 <b className="pl-2">1/1 ITEMS SELECTED</b>
                 <div
                   className="ml-auto d-flex align-items-center"
@@ -207,17 +268,11 @@ function Bag() {
 
             <div
               className="rounded mb-4"
-              style={{ border: "1px solid #d4d5d9" }}
+              style={{ border: "1px solid #d4d5d9", padding: "16px" }}
             >
-              <div
-                className="justify-content-end bg-white d-flex fa-2x mr-3"
-                style={{ height: "0px" }}
-              >
-                &times;
-              </div>
-              <div className="d-flex">
+              <div className="d-flex position-relative">
                 {loading ? (
-                  <div className="row d-flex py-3 pl-3 gx-0">
+                  <div className="row d-flex gx-0">
                     <div className="col-2">
                       <Skeleton height={188} />
                     </div>
@@ -226,14 +281,14 @@ function Bag() {
                     </div>
                   </div>
                 ) : (
-                  <div className="row d-flex py-3 pl-3 gx-0">
+                  <div className="row d-flex gx-0">
                     <div className="col-2 align-items-center d-flex">
                       <img
                         src={items.image}
                         className="img-fluid p-lg-2 p-md-2"
                       />
                     </div>
-                    <div className="col-10 pl-3">
+                    <div className="col-10 pl-3" style={{ fontSize: "14px" }}>
                       <div style={{ fontWeight: "500" }}> {items.title}</div>
                       <div>{items.category}</div>
                       <div
@@ -245,7 +300,7 @@ function Bag() {
                         className="border-0 rounded mt-3"
                         style={{
                           outline: "none",
-                          cursor:"pointer",
+                          cursor: "pointer",
                           background: "rgb(212 213 217 / 43%)",
                           fontWeight: "500",
                         }}
@@ -264,7 +319,7 @@ function Bag() {
                         className="border-0 rounded my-2 ml-3"
                         style={{
                           outline: "none",
-                          cursor:"pointer",
+                          cursor: "pointer",
                           background: "rgb(212 213 217 / 43%)",
                           fontWeight: "500",
                         }}
@@ -322,29 +377,44 @@ function Bag() {
                     </div>
                   </div>
                 )}
+                <div
+                  className="bg-white fa-2x position-absolute"
+                  style={{ height: "0px", marginLeft: "97%", top: "-20px" }}
+                >
+                  &times;
+                </div>
               </div>
             </div>
 
             <div
-              className="d-flex p-3 rounded align-items-center mb-5"
-              style={{ border: "1px solid #d4d5d9" }}
+              className="d-flex rounded align-items-center mb-5"
+              style={{ border: "1px solid #d4d5d9", padding: "16px" }}
             >
-              <div className="py-1 pl-1" style={{ fontWeight: "500" }}>
+              <div className="" style={{ fontWeight: "500", fontSize: "14px" }}>
                 <span className="fa fa-bookmark-o fa-lg pr-2" />
                 Add More From Wishlist
               </div>
-              <div className="ml-auto pr-1">
-                <div className="fa fa-arrow-circle-right"></div>
+              <div className="ml-auto">
+                <div className="fa fa-angle-right fa-lg"></div>
               </div>
             </div>
           </div>
           <div className="col-lg-4 col-12 p-3">
-            <div className="mt-4" style={{ fontWeight: "500" }}>
-              DONATE FOR COVID RELIEF
+            <div
+              className="mt-4"
+              style={{ fontWeight: "500", fontSize: "12px" }}
+            >
+              SUPPORT TRANSFORMATIVE SOCIAL WORK IN INDIA
             </div>
             <div className="py-4 d-flex">
-              <input type="checkbox" className="form-check" />{" "}
-              <b>&nbsp;&nbsp;&nbsp;Help India Fight COVID-19</b>
+              <input
+                type="checkbox"
+                className="form-check"
+                style={{ width: "15px", fontSize: "14px", cursor: "pointer" }}
+              />{" "}
+              <div style={{ fontWeight: "600" }}>
+                &nbsp;&nbsp;&nbsp;Support Us
+              </div>
             </div>
 
             <div
@@ -352,26 +422,46 @@ function Bag() {
               style={{ fontSize: "16px", fontWeight: "500" }}
             >
               <span
-                className="px-3 py-2"
-                style={{ borderRadius: "35px", border: "1px solid #d4d5d9" }}
+                className=""
+                style={{
+                  padding: "8px 16px",
+                  fontSize: "14px",
+                  borderRadius: "35px",
+                  border: "1px solid #d4d5d9",
+                }}
               >
                 ₹10
               </span>
               <span
-                className="px-3 py-2 ml-3"
-                style={{ borderRadius: "35px", border: "1px solid #d4d5d9" }}
+                className="ml-3"
+                style={{
+                  padding: "8px 16px",
+                  fontSize: "14px",
+                  borderRadius: "35px",
+                  border: "1px solid #d4d5d9",
+                }}
               >
                 ₹50
               </span>
               <span
-                className="px-3 py-2 mx-3"
-                style={{ borderRadius: "35px", border: "1px solid #d4d5d9" }}
+                className="mx-3"
+                style={{
+                  padding: "8px 16px",
+                  fontSize: "14px",
+                  borderRadius: "35px",
+                  border: "1px solid #d4d5d9",
+                }}
               >
                 ₹100
               </span>
               <span
-                className="px-3 py-2"
-                style={{ borderRadius: "35px", border: "1px solid #d4d5d9" }}
+                className=""
+                style={{
+                  padding: "8px 16px",
+                  fontSize: "14px",
+                  borderRadius: "35px",
+                  border: "1px solid #d4d5d9",
+                }}
               >
                 Other
               </span>
@@ -393,12 +483,13 @@ function Bag() {
                 <span style={{ fontWeight: "500" }}>Apply Coupons</span>
                 <div className="ml-auto">
                   <div
-                    className="text-danger px-3 align-items-center rounded d-flex justify-content-center"
+                    className="text-danger rounded-0 align-items-center rounded d-flex justify-content-center"
                     style={{
                       fontWeight: "500",
-                      border: "1px solid #dc3545",
+                      border: "1px solid rgb(255, 63, 108)",
                       fontSize: "14px",
-                      height: "35px",
+                      cursor: "pointer",
+                      padding: "4px 16px",
                     }}
                   >
                     APPLY
@@ -456,17 +547,18 @@ function Bag() {
 
             <hr style={{ color: "#d4d5d9" }}></hr>
 
-            <div className="d-flex align-items-center">
-              <div className="py-2">
-                <b>Total Amount</b>
-              </div>
-              <div className="ml-auto">
-                <b>$&nbsp;XXX</b>
-              </div>
+            <div
+              className="d-flex align-items-center"
+              style={{ fontSize: "14px", fontWeight: "600" }}
+            >
+              <div className="py-2">Total Amount</div>
+              <div className="ml-auto">$&nbsp;XXX</div>
             </div>
+
             <div
               className="btn btn-danger border-0 rounded-0 w-100 my-2 py-2"
               style={{ background: "rgb(255, 63, 108)" }}
+              onClick={transferFund}
             >
               <b>PLACE ORDER</b>
             </div>
@@ -478,3 +570,9 @@ function Bag() {
 }
 
 export default Bag;
+// <div className="" style={{ fontWeight: "500" }}>
+// Balance : ₹ {balance * 104327.87}
+// </div>
+// <div className="my-3">
+// Account : {account ? account : "not connected"}
+// </div>

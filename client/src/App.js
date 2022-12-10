@@ -26,6 +26,7 @@ import Otp from "./components/Otp";
 import LoginUsingPassword from "./components/LoginUsingPassword";
 import ResetPassword from "./components/ResetPassword";
 import Men from "./components/Categories/Men";
+import Test from "./components/Test";
 
 const App = () => {
   useEffect(() => {
@@ -58,6 +59,7 @@ const App = () => {
             <Route exact path="/forgot" component={ResetPassword} />
 
             <Route exact path="/men" component={Men} />
+            <Route exact path="/test" component={Test} />
           </div>
         </Switch>
         <Footer />
