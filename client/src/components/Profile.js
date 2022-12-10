@@ -361,6 +361,7 @@ function Profile() {
                       style={{ border: "1px solid #8080804d", width: "100%" }}
                     >
                       <img
+                        alt="myntra"
                         src={orders}
                         className="img-fluid mb-4"
                         style={{ width: "40px" }}
@@ -379,6 +380,7 @@ function Profile() {
                       style={{ border: "1px solid #8080804d", width: "100%" }}
                     >
                       <img
+                        alt="myntra"
                         src={collections}
                         className="img-fluid mb-4"
                         style={{ width: "40px" }}
@@ -397,6 +399,7 @@ function Profile() {
                       style={{ border: "1px solid #8080804d", width: "100%" }}
                     >
                       <img
+                        alt="myntra"
                         src={credit}
                         className="img-fluid mb-4"
                         style={{ width: "40px" }}
@@ -415,6 +418,7 @@ function Profile() {
                       style={{ border: "1px solid #8080804d", width: "100%" }}
                     >
                       <img
+                        alt="myntra"
                         src={points}
                         className="img-fluid mb-4"
                         style={{ width: "40px" }}
@@ -433,6 +437,7 @@ function Profile() {
                       style={{ border: "1px solid #8080804d", width: "100%" }}
                     >
                       <img
+                        alt="myntra"
                         src={cards}
                         className="img-fluid mb-4"
                         style={{ width: "40px" }}
@@ -451,6 +456,7 @@ function Profile() {
                       style={{ border: "1px solid #8080804d", width: "100%" }}
                     >
                       <img
+                        alt="myntra"
                         src={upiIcon}
                         className="img-fluid mb-4"
                         style={{ width: "40px" }}
@@ -469,6 +475,7 @@ function Profile() {
                       style={{ border: "1px solid #8080804d", width: "100%" }}
                     >
                       <img
+                        alt="myntra"
                         src={address}
                         className="img-fluid mb-4"
                         style={{ width: "40px" }}
@@ -487,6 +494,7 @@ function Profile() {
                       style={{ border: "1px solid #8080804d", width: "100%" }}
                     >
                       <img
+                        alt="myntra"
                         src={coupons}
                         className="img-fluid mb-4"
                         style={{ width: "40px" }}
@@ -505,6 +513,7 @@ function Profile() {
                       style={{ border: "1px solid #8080804d", width: "100%" }}
                     >
                       <img
+                        alt="myntra"
                         src={edit}
                         className="img-fluid mb-4"
                         style={{ width: "40px" }}
@@ -606,7 +615,10 @@ function Profile() {
                           </div>
                           <div className="" style={{ fontSize: "14px" }}>
                             On Tue, 15 Nov |{" "}
-                            <img src="https://myntraweb.blob.core.windows.net/selfserveui/assets/svg/mexpress-tag.svg" />
+                            <img
+                              alt="myntra"
+                              src="https://myntraweb.blob.core.windows.net/selfserveui/assets/svg/mexpress-tag.svg"
+                            />
                           </div>
                         </div>
                       </div>
@@ -617,6 +629,7 @@ function Profile() {
                       >
                         <div className="d-flex p-3 align-items-center">
                           <img
+                            alt="myntra"
                             src={collections}
                             style={{ height: "70px", width: "53px" }}
                           />
@@ -714,6 +727,7 @@ function Profile() {
               <div id="credit" className="tab-pane fade">
                 <div>
                   <img
+                    alt="myntra"
                     src={creditImg}
                     style={{
                       boxShadow: "0 1px 2px 0 rgb(0 0 0 / 25%)",
@@ -1675,7 +1689,7 @@ function Profile() {
               <div id="cards" className="tab-pane fade">
                 <div className="justify-content-center d-flex">
                   <div className="text-center">
-                    <img src={cards} className="py-5" />
+                    <img alt="myntra" src={cards} className="py-5" />
                     <div
                       className="pb-4"
                       style={{ fontSize: "15px", fontWeight: "500" }}
@@ -1708,6 +1722,7 @@ function Profile() {
                       <hr style={{ color: "#A9ABB3", width: "40%" }}></hr>
                     </div>
                     <img
+                      alt="myntra"
                       className="my-3"
                       src="https://static-assets-web.flixcart.com/fk-p-linchpin-web/fk-cp-zion/img/payment-method_69e7ec.svg"
                     />
@@ -1745,6 +1760,7 @@ function Profile() {
                           xyz@gmail.com
                         </div>
                         <img
+                          alt="myntra"
                           className="ml-auto"
                           style={{ height: "17px" }}
                           src={upi}
@@ -1827,7 +1843,10 @@ function Profile() {
                     <div className="pt-3">{userAddress.state}</div>
                   </div>
                   <div id="default">
-                    <div className="pl-3 mt-3" style={{ color: "#696E79", fontSize:"14px" }}>
+                    <div
+                      className="pl-3 mt-3"
+                      style={{ color: "#696E79", fontSize: "14px" }}
+                    >
                       Mobile: {userAddress.mobile}
                     </div>
                     <hr></hr>
@@ -1877,98 +1896,97 @@ function Profile() {
                 </div>
 
                 <div>
-               
+                  <div
+                    className="py-3 mt-3"
+                    style={{ boxShadow: "0 1px 2px 0 rgb(0 0 0 / 25%)" }}
+                  >
+                    <div className="d-flex px-3">
+                      <div style={{ fontSize: "16px", fontWeight: "600" }}>
+                        {userAddress.full_name}
+                      </div>
                       <div
-                        className="py-3 mt-3"
-                        style={{ boxShadow: "0 1px 2px 0 rgb(0 0 0 / 25%)" }}
+                        className="rounded-pill btn btn-dark border-0 text-dark p-0 px-2 ml-auto"
+                        style={{
+                          fontSize: "14px",
+                          fontWeight: "700",
+                          background: "#F5F5F6",
+                        }}
                       >
-                        <div className="d-flex px-3">
-                          <div style={{ fontSize: "16px", fontWeight: "600" }}>
-                            {userAddress.full_name}
-                          </div>
+                        {userAddress.type_of_address}
+                      </div>
+                    </div>
+                    <div
+                      className="p-3 py-2 mt-2"
+                      style={{
+                        color: "#696E79",
+                        lineHeight: "0",
+                        fontSize: "14px",
+                      }}
+                      onClick={setAddress}
+                    >
+                      <div>{userAddress.address},</div>
+                      <div className="pt-3">{userAddress.locality}</div>
+                      <div className="pt-3">
+                        {userAddress.city} - {userAddress.pincode}
+                      </div>
+                      <div className="pt-3">{userAddress.state}</div>
+                    </div>
+                    <div id="other" style={{ display: "none" }}>
+                      <div
+                        className="pl-3 mt-3"
+                        style={{ color: "#696E79", fontSize: "14px" }}
+                      >
+                        Mobile: {userAddress.mobile}
+                      </div>
+                      <div
+                        className="pt-2 pl-3"
+                        style={{
+                          fontSize: "12px",
+                          color: "#14cda8",
+                          fontWeight: "700",
+                          cursor: "pointer",
+                        }}
+                      >
+                        MAKE THIS DEFAULT
+                      </div>
+                      <hr></hr>
+                      <div className="row">
+                        <div
+                          className="text-center col-6"
+                          style={{
+                            borderRight: "1px solid #8080804d",
+                            cursor: "pointer",
+                          }}
+                          data-target="#mymodal"
+                          data-toggle="modal"
+                        >
                           <div
-                            className="rounded-pill btn btn-dark border-0 text-dark p-0 px-2 ml-auto"
                             style={{
-                              fontSize: "14px",
-                              fontWeight: "700",
-                              background: "#F5F5F6",
+                              color: "#526cd0",
+                              fontWeight: "500",
+                              fontSize: "16px",
                             }}
                           >
-                            {userAddress.type_of_address}
+                            EDIT
                           </div>
                         </div>
                         <div
-                          className="p-3 py-2 mt-2"
-                          style={{
-                            color: "#696E79",
-                            lineHeight: "0",
-                            fontSize: "14px",
-                          }}
-                          onClick={setAddress}
+                          className="text-center col-6"
+                          style={{ cursor: "pointer" }}
                         >
-                          <div>{userAddress.address},</div>
-                          <div className="pt-3">{userAddress.locality}</div>
-                          <div className="pt-3">
-                            {userAddress.city} - {userAddress.pincode}
-                          </div>
-                          <div className="pt-3">{userAddress.state}</div>
-                        </div>
-                        <div id="other" style={{ display: "none" }}>
                           <div
-                            className="pl-3 mt-3"
-                            style={{ color: "#696E79", fontSize: "14px" }}
-                          >
-                            Mobile: {userAddress.mobile}
-                          </div>
-                          <div
-                            className="pt-2 pl-3"
                             style={{
-                              fontSize: "12px",
-                              color: "#14cda8",
-                              fontWeight: "700",
-                              cursor: "pointer",
+                              color: "#526cd0",
+                              fontWeight: "500",
+                              fontSize: "16px",
                             }}
                           >
-                            MAKE THIS DEFAULT
-                          </div>
-                          <hr></hr>
-                          <div className="row">
-                            <div
-                              className="text-center col-6"
-                              style={{
-                                borderRight: "1px solid #8080804d",
-                                cursor: "pointer",
-                              }}
-                              data-target="#mymodal"
-                              data-toggle="modal"
-                            >
-                              <div
-                                style={{
-                                  color: "#526cd0",
-                                  fontWeight: "500",
-                                  fontSize: "16px",
-                                }}
-                              >
-                                EDIT
-                              </div>
-                            </div>
-                            <div
-                              className="text-center col-6"
-                              style={{ cursor: "pointer" }}
-                            >
-                              <div
-                                style={{
-                                  color: "#526cd0",
-                                  fontWeight: "500",
-                                  fontSize: "16px",
-                                }}
-                              >
-                                REMOVE
-                              </div>
-                            </div>
+                            REMOVE
                           </div>
                         </div>
                       </div>
+                    </div>
+                  </div>
                 </div>
 
                 <div className="modal fade" id="newAddress">
@@ -2368,7 +2386,7 @@ function Profile() {
                           <div>Type of Address *</div>
                           <div className="d-flex mt-3">
                             <input
-                            required
+                              required
                               type="radio"
                               name="typeOfAddress"
                               value="home"
@@ -2378,7 +2396,7 @@ function Profile() {
                             />
                             Home
                             <input
-                            required
+                              required
                               type="radio"
                               name="typeOfAddress"
                               value="office"
@@ -2463,6 +2481,7 @@ function Profile() {
           <NavLink to="/orders" className="text-decoration-none text-dark">
             <div className="d-flex p-2 px-3 align-items-center">
               <img
+                alt="myntra"
                 src={orders}
                 className="img-fluid"
                 style={{ width: "25px" }}
@@ -2483,6 +2502,7 @@ function Profile() {
             {" "}
             <div className="d-flex p-2 px-3 align-items-center">
               <img
+                alt="myntra"
                 src={collections}
                 className="img-fluid"
                 style={{ width: "25px" }}
@@ -2507,6 +2527,7 @@ function Profile() {
           <NavLink to="/credit" className="text-decoration-none text-dark">
             <div className="d-flex p-2 px-3 align-items-center">
               <img
+                alt="myntra"
                 src={credit}
                 className="img-fluid"
                 style={{ width: "25px" }}
@@ -2527,6 +2548,7 @@ function Profile() {
             {" "}
             <div className="d-flex p-2 px-3 align-items-center">
               <img
+                alt="myntra"
                 src={points}
                 className="img-fluid"
                 style={{ width: "25px" }}
@@ -2547,6 +2569,7 @@ function Profile() {
             {" "}
             <div className="d-flex p-2 px-3 align-items-center">
               <img
+                alt="myntra"
                 src={cards}
                 className="img-fluid"
                 style={{ width: "25px" }}
@@ -2567,6 +2590,7 @@ function Profile() {
             {" "}
             <div className="d-flex p-2 px-3 align-items-center">
               <img
+                alt="myntra"
                 src={upiIcon}
                 className="img-fluid"
                 style={{ width: "25px" }}
@@ -2587,6 +2611,7 @@ function Profile() {
             {" "}
             <div className="d-flex p-2 px-3 align-items-center">
               <img
+                alt="myntra"
                 src={address}
                 className="img-fluid"
                 style={{ width: "25px" }}
@@ -2607,6 +2632,7 @@ function Profile() {
             {" "}
             <div className="d-flex p-2 px-3 align-items-center">
               <img
+                alt="myntra"
                 src={coupons}
                 className="img-fluid"
                 style={{ width: "25px" }}
@@ -2631,7 +2657,12 @@ function Profile() {
           <NavLink to="/editProfile" className="text-decoration-none text-dark">
             {" "}
             <div className="d-flex p-2 px-3 align-items-center">
-              <img src={edit} className="img-fluid" style={{ width: "25px" }} />
+              <img
+                alt="myntra"
+                src={edit}
+                className="img-fluid"
+                style={{ width: "25px" }}
+              />
               <div className="ml-3">
                 <div style={{ fontSize: "15px", fontWeight: "500" }}>
                   Profile Details

@@ -27,6 +27,8 @@ import LoginUsingPassword from "./components/LoginUsingPassword";
 import ResetPassword from "./components/ResetPassword";
 import Men from "./components/Categories/Men";
 import Test from "./components/Test";
+import Address from "./components/Address";
+import Payment from "./components/PlaceOrder";
 
 const App = () => {
   useEffect(() => {
@@ -37,6 +39,8 @@ const App = () => {
       <div className="app">
         <Switch>
           <Route exact path="/myntra/:id/bag" component={Bag} />
+          <Route exact path="/myntra/:id/address" component={Address} />
+          <Route exact path="/myntra/:id/payment/:price" component={Payment} />
           <div>
             <Navbar />
             <Route exact path="/" component={Home} />

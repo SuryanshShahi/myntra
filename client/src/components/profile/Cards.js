@@ -10,7 +10,7 @@ function Cards() {
       {" "}
       <div className="justify-content-center d-flex px-2">
         <div className="text-center">
-          <img src={card} className="py-5" />
+          <img alt="" src={card} className="py-5" />
           <div className="pb-4" style={{ fontSize: "15px", fontWeight: "500" }}>
             SAVE YOUR CREDIT/DEBIT CARDS DURING PAYMENT
           </div>
@@ -39,7 +39,7 @@ function Cards() {
             </div>
             <hr style={{ color: "#A9ABB3", width: "40%" }}></hr>
           </div>
-          <img
+          <img alt=""
             className="my-3 img-fluid"
             src="https://static-assets-web.flixcart.com/fk-p-linchpin-web/fk-cp-zion/img/payment-method_69e7ec.svg"
           />

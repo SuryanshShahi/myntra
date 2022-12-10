@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { NavLink, useHistory, useParams } from "react-router-dom";
 import Swal from "sweetalert2";
-import Mobile from "./LoginSignup";
 
 function SignUp() {
   const history = useHistory();

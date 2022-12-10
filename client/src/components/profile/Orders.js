@@ -81,7 +81,7 @@ function Orders() {
                   </div>
                   <div className="" style={{ fontSize: "12px" }}>
                     On Tue, 15 Nov |{" "}
-                    <img src="https://myntraweb.blob.core.windows.net/selfserveui/assets/svg/mexpress-tag.svg" />
+                    <img alt="" src="https://myntraweb.blob.core.windows.net/selfserveui/assets/svg/mexpress-tag.svg" />
                   </div>
                 </div>
               </div>
@@ -95,7 +95,7 @@ function Orders() {
                 }}
               >
                 <div className="d-flex p-2 align-items-center">
-                  <img
+                  <img alt=""
                     src={collections}
                     style={{ height: "70px", width: "53px" }}
                   />
@@ -173,7 +173,7 @@ function Orders() {
                   </div>
                   <div className="" style={{ fontSize: "12px" }}>
                     On Tue, 15 Nov |{" "}
-                    <img src="https://myntraweb.blob.core.windows.net/selfserveui/assets/svg/mexpress-tag.svg" />
+                    <img alt="" src="https://myntraweb.blob.core.windows.net/selfserveui/assets/svg/mexpress-tag.svg" />
                   </div>
                 </div>
               </div>
@@ -187,7 +187,7 @@ function Orders() {
                 }}
               >
                 <div className="d-flex p-2 align-items-center">
-                  <img
+                  <img alt=""
                     src={collections}
                     style={{ height: "70px", width: "53px" }}
                   />

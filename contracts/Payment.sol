@@ -11,12 +11,4 @@ contract Payment {
     function transfer() external payable {
         funders[noOfFunders] = msg.sender;
     }
-
-    function withdraw(uint256 amount) external {
-        require(
-            amount <= 2000000000000000000,
-            "Cannot withdraw more than 2 ether"
-        );
-        payable(msg.sender).transfer(amount);
-    }
 }

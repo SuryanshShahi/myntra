@@ -6,10 +6,11 @@ function MyntraCredit() {
     document.getElementById("footer").style.display = "none";
   }, []);
   return (
-    <section style={{background:"#eee"}}>
+    <section style={{ background: "#eee" }}>
       {" "}
       <div>
         <img
+          alt=""
           src={creditImg}
           style={{
             boxShadow: "0 1px 2px 0 rgb(0 0 0 / 25%)",
@@ -20,10 +21,19 @@ function MyntraCredit() {
           className="p-3 mt-2 bg-white"
           style={{ boxShadow: "0 1px 2px 0 rgb(0 0 0 / 25%)" }}
         >
-          <div className="text-center" style={{ fontSize: "13px", fontWeight: "500" }}>
+          <div
+            className="text-center"
+            style={{ fontSize: "13px", fontWeight: "500" }}
+          >
             TOP-UP YOUR MYNTRA CREDIT NOW!
           </div>
-          <div className="text-center" style={{ fontSize: "30px", fontWeight: "700" }}> ₹0.00</div>
+          <div
+            className="text-center"
+            style={{ fontSize: "30px", fontWeight: "700" }}
+          >
+            {" "}
+            ₹0.00
+          </div>
           <hr></hr>
           <div className="row">
             <div
@@ -105,8 +115,8 @@ function MyntraCredit() {
                 fontSize: "12px",
               }}
             >
-              MYNTRA CREDIT T&C{" "}
-              &nbsp;<span className="fa fa-angle-right fa-lg"></span>
+              MYNTRA CREDIT T&C &nbsp;
+              <span className="fa fa-angle-right fa-lg"></span>
             </div>
             <div
               className="d-flex align-items-center mx-sm-5 mx-4"
@@ -116,8 +126,8 @@ function MyntraCredit() {
                 fontSize: "12px",
               }}
             >
-              GIFT CARD T&C{" "}
-              &nbsp;<span className="fa fa-angle-right fa-lg"></span>
+              GIFT CARD T&C &nbsp;
+              <span className="fa fa-angle-right fa-lg"></span>
             </div>
             <div
               className="d-flex align-items-center"
@@ -127,7 +137,7 @@ function MyntraCredit() {
                 fontSize: "12px",
               }}
             >
-            FAQS &nbsp; <span className="fa fa-angle-right fa-lg"></span>
+              FAQS &nbsp; <span className="fa fa-angle-right fa-lg"></span>
             </div>
           </div>
         </div>

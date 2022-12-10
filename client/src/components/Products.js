@@ -38,7 +38,7 @@ function Products() {
         <div className="row gx-0" key={items.id}>
           <div className="col-lg-6 col-12 justify-content-center mt-lg-5 d-flex">
             <div className="m-5" style={{ top: "0", position: "sticky" }}>
-              <img
+              <img alt=""
                 src={items.image}
                 className="img-fluid mt-lg-5"
                 style={{ maxWidth: "30vw" }}

@@ -3,9 +3,6 @@ import { NavLink, useParams } from "react-router-dom";
 import logo from "./images/myntra.png";
 import Skeleton from "react-loading-skeleton";
 import "react-loading-skeleton/dist/skeleton.css";
-import detectEthereumProvider from "@metamask/detect-provider";
-import Web3 from "web3";
-import { loadContract } from "../utils/load-contract";
 
 function Bag() {
   window.scroll(0, 0);
@@ -19,64 +16,8 @@ function Bag() {
     setLoading(false);
   };
 
-  const [web3api, setweb3api] = useState({
-    provider: null,
-    web3: null,
-    contract: null,
-  });
-  const [account, setAccount] = useState(null);
-  const [balance, setBalance] = useState(null);
-  const [reload, setReload] = useState(false);
-
-  const reloadPage = () => setReload(!reload);
   useEffect(() => {
-    const loadBalance = async () => {
-      const { contract, web3 } = web3api;
-      const balance = await web3.eth.getBalance(contract.address);
-      setBalance(web3.utils.fromWei(balance, "ether"));
-    };
-    web3api.contract && loadBalance();
-  }, [web3api, reload]);
-
-  useEffect(() => {
-    const loadProviders = async () => {
-      const provider = await detectEthereumProvider();
-      const contract = await loadContract("Payment", provider);
-
-      if (provider) {
-        provider.request({ method: "eth_requestAccounts" });
-        setweb3api({
-          web3: new Web3(provider),
-          provider,
-          contract,
-        });
-      } else {
-        console.error("Please install Metamask");
-      }
-    };
-    loadProviders();
-  }, []);
-  console.log(web3api.web3);
-
-  useEffect(() => {
-    const getAcc = async () => {
-      const accounts = await web3api.web3.eth.getAccounts();
-      setAccount(accounts[0]);
-    };
-    web3api.web3 && getAcc();
-  }, [web3api.web3]);
-
-  const transferFund = async () => {
-    const { contract, web3 } = web3api;
-    var price1 = items.price * 0.0000096;
-    await contract.transfer({
-      from: account,
-      value: web3.utils.toWei(`${price1}`, "ether"),
-    });
-    reloadPage();
-  };
-
-  useEffect(() => {
+    document.getElementById("footer").style.display = "block";
     getData();
     document.title = `SHOPPING BAG`;
     document.body.style.background = "none";
@@ -88,7 +29,7 @@ function Bag() {
       </div>
       <nav
         className="navbar navbar-expand-lg bg-white p-0 m-0 px-lg-5 px-md-5"
-        style={{ borderBottom: "1px solid #d4d5d9" }}
+        style={{ borderBottom: "1px solid #eaeaec", height: "80px" }}
       >
         <div className="d-flex py-3 px-3 w-100">
           <div className="">
@@ -96,7 +37,7 @@ function Bag() {
               <img
                 src={logo}
                 className="img-fluid"
-                style={{ width: "80px", height: "50px" }}
+                style={{ width: "45px", height: "31px" }}
               />
             </NavLink>
           </div>
@@ -107,30 +48,31 @@ function Bag() {
             >
               <li className="nav-item">
                 <div
-                  className="active nav-link text-info"
-                  style={{ fontWeight: "500" }}
+                  className="nav-link p-0"
+                  style={{
+                    fontWeight: "500",
+                    fontSize: "14px",
+                    color: "#20BD99",
+                    borderBottom: "2px solid #20BD99",
+                  }}
                 >
                   BAG
-                  <hr
-                    className="p-0 m-0"
-                    style={{ height: "2px", color: "blue" }}
-                  ></hr>
                 </div>
               </li>
-              <div>-----------</div>
+              <div className="mx-2">-----------</div>
               <li className="nav-item">
                 <div
-                  className="nav-link text-dark"
-                  style={{ fontWeight: "500" }}
+                  className="nav-link p-0 text-dark"
+                  style={{ fontWeight: "500", fontSize: "14px" }}
                 >
                   ADDRESS
                 </div>
               </li>
-              <div>-----------</div>
+              <div className="mx-2">-----------</div>
               <li className="nav-item">
                 <div
-                  className="nav-link text-dark"
-                  style={{ fontWeight: "500" }}
+                  className="nav-link p-0 text-dark"
+                  style={{ fontWeight: "500", fontSize: "14px" }}
                 >
                   PAYMENT
                 </div>
@@ -151,11 +93,11 @@ function Bag() {
         <div className="row">
           <div
             className="col-lg-8 col-12 pr-4 address"
-            style={{ borderRight: "1px solid #d4d5d9" }}
+            style={{ borderRight: "1px solid #eaeaec" }}
           >
             <div
               className="d-flex rounded mb-2 mt-5"
-              style={{ border: "1px solid #d4d5d9", padding: "16px" }}
+              style={{ border: "1px solid #eaeaec", padding: "16px" }}
             >
               <div style={{ fontSize: "12px" }}>
                 Deliver to: <b>xxxxxxxxxxxx, 123456</b>
@@ -180,7 +122,7 @@ function Bag() {
 
             <div
               className="d-flex rounded"
-              style={{ border: "1px solid #d4d5d9", padding: "16px" }}
+              style={{ border: "1px solid #eaeaec", padding: "16px" }}
             >
               <div>
                 <span className="fa fa-certificate fa-lg pr-2"></span>
@@ -228,14 +170,19 @@ function Bag() {
                       with PayZapp. TCA
                     </li>
                     <div
-                      className="text-danger pl-4 py-2"
-                      style={{ cursor: "pointer", fontWeight: "500" }}
+                      className="pl-4 py-2"
+                      style={{
+                        cursor: "pointer",
+                        fontWeight: "500",
+                        fontSize: "14px",
+                        color: "rgb(255, 63, 108)",
+                      }}
                       onClick={() => {
                         document.getElementById("less").style.display = "none";
                         document.getElementById("more").style.display = "block";
                       }}
                     >
-                      Show Less
+                      Show Less <span className="fa fa-angle-up fa-lg"></span>
                     </div>
                   </div>
                 </div>
@@ -268,7 +215,7 @@ function Bag() {
 
             <div
               className="rounded mb-4"
-              style={{ border: "1px solid #d4d5d9", padding: "16px" }}
+              style={{ border: "1px solid #eaeaec", padding: "16px" }}
             >
               <div className="d-flex position-relative">
                 {loading ? (
@@ -388,7 +335,7 @@ function Bag() {
 
             <div
               className="d-flex rounded align-items-center mb-5"
-              style={{ border: "1px solid #d4d5d9", padding: "16px" }}
+              style={{ border: "1px solid #eaeaec", padding: "16px" }}
             >
               <div className="" style={{ fontWeight: "500", fontSize: "14px" }}>
                 <span className="fa fa-bookmark-o fa-lg pr-2" />
@@ -427,7 +374,7 @@ function Bag() {
                   padding: "8px 16px",
                   fontSize: "14px",
                   borderRadius: "35px",
-                  border: "1px solid #d4d5d9",
+                  border: "1px solid #eaeaec",
                 }}
               >
                 ₹10
@@ -438,7 +385,7 @@ function Bag() {
                   padding: "8px 16px",
                   fontSize: "14px",
                   borderRadius: "35px",
-                  border: "1px solid #d4d5d9",
+                  border: "1px solid #eaeaec",
                 }}
               >
                 ₹50
@@ -449,7 +396,7 @@ function Bag() {
                   padding: "8px 16px",
                   fontSize: "14px",
                   borderRadius: "35px",
-                  border: "1px solid #d4d5d9",
+                  border: "1px solid #eaeaec",
                 }}
               >
                 ₹100
@@ -460,7 +407,7 @@ function Bag() {
                   padding: "8px 16px",
                   fontSize: "14px",
                   borderRadius: "35px",
-                  border: "1px solid #d4d5d9",
+                  border: "1px solid #eaeaec",
                 }}
               >
                 Other
@@ -483,10 +430,11 @@ function Bag() {
                 <span style={{ fontWeight: "500" }}>Apply Coupons</span>
                 <div className="ml-auto">
                   <div
-                    className="text-danger rounded-0 align-items-center rounded d-flex justify-content-center"
+                    className="rounded-0 align-items-center rounded d-flex justify-content-center"
                     style={{
                       fontWeight: "500",
                       border: "1px solid rgb(255, 63, 108)",
+                      color: "rgb(255, 63, 108)",
                       fontSize: "14px",
                       cursor: "pointer",
                       padding: "4px 16px",
@@ -555,13 +503,18 @@ function Bag() {
               <div className="ml-auto">$&nbsp;XXX</div>
             </div>
 
-            <div
-              className="btn btn-danger border-0 rounded-0 w-100 my-2 py-2"
-              style={{ background: "rgb(255, 63, 108)" }}
-              onClick={transferFund}
+            <NavLink
+              className="text-decoration-none"
+              to={`/myntra/${id}/address`}
             >
-              <b>PLACE ORDER</b>
-            </div>
+              {" "}
+              <div
+                className="btn btn-danger border-0 rounded-0 w-100 my-2 py-2"
+                style={{ background: "rgb(255, 63, 108)" }}
+              >
+                <b>PLACE ORDER</b>
+              </div>
+            </NavLink>
           </div>
         </div>
       </div>

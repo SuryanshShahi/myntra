@@ -35,7 +35,7 @@ function Vpa() {
               <div style={{ fontWeight: "500", fontSize: "12px" }}>
                 xyz@gmail.com
               </div>
-              <img className="ml-auto" style={{ height: "17px" }} src={upi} />
+              <img alt="" className="ml-auto" style={{ height: "17px" }} src={upi} />
             </div>
             <div style={{ color: "#A9ABB3", fontSize: "11px" }}>
               ACCOUNT HOLDER
