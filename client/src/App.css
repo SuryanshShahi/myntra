@@ -345,7 +345,7 @@ input[type="radio"] {
   color: #14cda8;
   font-weight: 500;
 }
-.css-1d3z3hw-MuiOutlinedInput-notchedOutline{
+.css-1d3z3hw-MuiOutlinedInput-notchedOutline {
   border-radius: 0 !important;
 }
 .overviewCards {
@@ -397,4 +397,14 @@ table .tt {
 #otpLogin input[type="tel"]:focus {
   outline: none;
   border: 1px solid black;
+}
+
+/* -----------------------------------categories---------------------------------------- */
+#filterBtn:hover {
+  cursor: pointer;
+  background: #e9e9ed78;
+}
+
+input[type=checkbox] {
+ border: 1px solid rgb(195, 194, 201) !important;
 }

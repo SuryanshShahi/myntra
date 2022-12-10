@@ -337,24 +337,6 @@ export const TrendingOutfits = [
   "/images/TRENDING OUTFITS BY INFLUENCERS/8.jpg",
 ];
 
-// ----------------------------------dropdown----------------------------------
-
-export const dropdown = [
-  {
-    men: [
-      "T-Shirts",
-      "Casual Shirts",
-      "Formal Shirts",
-      "Sweatshirts",
-      "Sweaters",
-      "Jackets",
-      "Blazers & Coats",
-      "Suits",
-      "Rain Jackets",
-    ],
-  },
-];
-
 // ----------------------------------sidebar----------------------------------
 
 export const sidebar = [
@@ -1243,39 +1225,3 @@ export const search = [
   "Forest Essentials",
 ];
 
-// ----------------------------------profile----------------------------------
-
-export const userProfile = [
-  {
-    Field: "Full Name",
-    value: "-not added-",
-  },
-  {
-    Field: "Mobile Number",
-    value: "-not added-",
-  },
-  {
-    Field: "Email ID",
-    value: "-not added-",
-  },
-  {
-    Field: "Gender",
-    value: "-not added-",
-  },
-  {
-    Field: "Date of Birth",
-    value: "-not added-",
-  },
-  {
-    Field: "Location",
-    value: "-not added-",
-  },
-  {
-    Field: "Alternate Mobile",
-    value: "-not added-",
-  },
-  {
-    Field: "Hint Name",
-    value: "-not added-",
-  },
-];

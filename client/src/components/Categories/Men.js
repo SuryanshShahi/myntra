@@ -1,5 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { NavLink, useParams } from "react-router-dom";
+import { MenBrands, MenCategories } from "../../Data/Categories";
+import { sidebar } from "../../Data/Data";
 import CardSkeleton from "../CardSkeleton";
 
 function Men() {
@@ -10,6 +12,9 @@ function Men() {
   const [loading, setLoading] = useState(true);
   const [items, setItems] = useState([]);
   const [data, setData] = useState(items);
+  const [heading, setHeading] = useState("");
+  const [searchTerm, setSearchTerm] = useState("");
+
   const getData = async () => {
     const res = await fetch("https://fakestoreapi.com/products");
     setItems(await res.json());
@@ -17,31 +22,34 @@ function Men() {
     setLoading(false);
   };
 
+  const changeHeading = (e) => {
+    setHeading(e.target.value);
+    setSearchTerm(e.target.value);
+  };
+
   useEffect(() => {
     getData();
     document.title = `Online Shopping for Women, Men, Kids Fashion & Lifestyle - Myntra`;
     setTimeout(() => {
-      filterData("men's clothing");
-      //   document.getElementById("click").click();
-    }, 100);
-  }, []);   
+      document.getElementById("products").click();
+    }, 1000);
+  }, []);
 
-  const filterData = (categ) => {
+  const filterData = () => {
     const updatedItems = items.filter((e) => {
-      return e.category === categ;
+      return e.category === "men's clothing";
     });
-    console.log(updatedItems);
     setData(updatedItems);
   };
 
   return (
-    <section id="products">
+    <section id="products" onClick={filterData}>
       <div className="backdrop" id="backdrop">
         .
       </div>
       <div className="pl-3 pb-lg-0 pb-3 pt-2">
         <div>
-          Home {params.pa}
+          Home
           <span style={{ fontWeight: "700", fontSize: "14px", color: "black" }}>
             &nbsp;/&nbsp;Myntra
           </span>
@@ -50,43 +58,51 @@ function Men() {
       </div>
       <div className="bundles">
         <div className="row gx-0">
-          <div className="col-2 pt-4 font-weight-bold pb-3 pl-4">
-            &nbsp;FILTERS
+          <div className="col-2 pt-4 pb-3 px-4 d-flex">
+            <div style={{ fontWeight: "500" }}>FILTERS</div>
+            <div
+              className="ml-auto"
+              style={{
+                fontSize: "14px",
+                fontWeight: "500",
+                color: "rgb(255, 63, 108)",
+              }}
+            >
+              CLEAR ALL
+            </div>
           </div>
           <div className="col-10">
             <div className="d-flex mt-3">
               <div
+                id="filterBtn"
                 className="px-3 align-items-center d-flex"
                 style={{
-                  outline: "none",
-                  background: "rgb(212 213 217 / 43%)",
-                  fontWeight: "500",
+                  fontSize: "14px",
                   borderRadius: "30px",
                 }}
               >
-                Bundles
+                Bundles<div className="fa fa-angle-down fa-lg pl-2 pt-1"></div>
               </div>
               <div
+                id="filterBtn"
                 className="px-3 align-items-center d-flex mx-2"
                 style={{
-                  outline: "none",
-                  background: "rgb(212 213 217 / 43%)",
-                  fontWeight: "500",
+                  fontSize: "14px",
                   borderRadius: "30px",
                 }}
               >
                 Country of Origin
+                <div className="fa fa-angle-down fa-lg pl-2 pt-1"></div>
               </div>
               <div
+                id="filterBtn"
                 className="px-3 align-items-center d-flex"
                 style={{
-                  outline: "none",
-                  background: "rgb(212 213 217 / 43%)",
-                  fontWeight: "500",
+                  fontSize: "14px",
                   borderRadius: "30px",
                 }}
               >
-                Size
+                Size<div className="fa fa-angle-down fa-lg pl-2 pt-1"></div>
               </div>
               <select
                 className="w-25 py-1 px-2 ml-auto mr-4"
@@ -109,97 +125,43 @@ function Men() {
           </div>
         </div>
       </div>
-      <div
-        className="row gx-0"
-        style={{ borderTop: "1px solid rgb(105 110 121 / 33%)" }}
-      >
+      <div className="row gx-0" style={{ borderTop: "1px solid #e9e9ed" }}>
         <div
           className="col-lg-2 gx-0 pt-3 sidebar"
-          style={{ borderRight: "1px solid rgb(105 110 121 / 33%)" }}
+          style={{ borderRight: "1px solid #e9e9ed" }}
         >
-          <div style={{ top: "0", position: "sticky" }}>
-            <hr></hr>
-
+          <div>
             <div className="pl-4">
               <span
                 style={{ fontWeight: "700", fontSize: "14px", color: "black" }}
               >
                 CATEGORIES
               </span>
-              <div className="pt-2">
-                <input type="checkbox" name="radio" />
-                <label className="pl-2">Tshirts</label>
-              </div>
-              <div>
-                <input type="checkbox" name="radio" />
-                <label className="pl-2">Shirts</label>
-              </div>
-              <div>
-                <input type="checkbox" name="radio" />
-                <label className="pl-2">Tops</label>
-              </div>
-              <div>
-                <input type="checkbox" name="radio" />
-                <label className="pl-2">Dresses</label>
-              </div>
-              <div>
-                <input type="checkbox" name="radio" />
-                <label className="pl-2">Jeans</label>
-              </div>
-              <div>
-                <input type="checkbox" name="radio" />
-                <label className="pl-2">Sweatshirts</label>
-              </div>
-              <div>
-                <input type="checkbox" name="radio" />
-                <label className="pl-2">Trousers</label>
-              </div>
-              <div>
-                <input type="checkbox" name="radio" />
-                <label className="pl-2">Casual Shoes</label>
-              </div>
+              {MenCategories.map((e) => {
+                return (
+                  <div className="d-flex" key={e.id}>
+                    <input
+                      type="checkbox"
+                      name="radio"
+                      className="form-check"
+                      style={{ width: "18px", border: "1px solid #c3c2c9" }}
+                    />
+                    <label className="pl-3">{e}</label>
+                  </div>
+                );
+              })}
             </div>
 
             <hr></hr>
 
             <div className="pl-4">
               <span
+                className="d-flex"
                 style={{ fontWeight: "700", fontSize: "14px", color: "black" }}
               >
-                BRAND
+                BRANDS
+               
               </span>
-              <div className="pt-2">
-                <input type="checkbox" name="radio" />
-                <label className="pl-2">Roadster</label>
-              </div>
-              <div>
-                <input type="checkbox" name="radio" />
-                <label className="pl-2">max</label>
-              </div>
-              <div>
-                <input type="checkbox" name="radio" />
-                <label className="pl-2">Mast & Harbour</label>
-              </div>
-              <div>
-                <input type="checkbox" name="radio" />
-                <label className="pl-2">DressBerry</label>
-              </div>
-              <div>
-                <input type="checkbox" name="radio" />
-                <label className="pl-2">URBANIC</label>
-              </div>
-              <div>
-                <input type="checkbox" name="radio" />
-                <label className="pl-2">HERE&NOW</label>
-              </div>
-              <div>
-                <input type="checkbox" name="radio" />
-                <label className="pl-2">Allen Solly</label>
-              </div>
-              <div>
-                <input type="checkbox" name="radio" />
-                <label className="pl-2">H&M</label>
-              </div>
             </div>
 
             <hr></hr>
@@ -543,10 +505,7 @@ function Men() {
           id="slider"
           style={{ boxShadow: "-1px 0px 7px -2px " }}
         >
-          <div
-            className=""
-            style={{ borderRight: "1px solid rgb(105 110 121 / 33%)" }}
-          >
+          <div className="" style={{ borderRight: "1px solid #e9e9ed" }}>
             <div>
               <div
                 className="d-flex align-items-center bg-white"

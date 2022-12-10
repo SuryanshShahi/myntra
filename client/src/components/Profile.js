@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from "react";
-import { userProfile } from "../Data/Data";
 import address from "./images/profile-address.png";
 import cards from "./images/profile-cards.png";
 import collections from "./images/profile-collections.png";
